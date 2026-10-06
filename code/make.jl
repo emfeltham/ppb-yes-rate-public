@@ -9,8 +9,8 @@
 #   tables.jl        empirical, quartile, response and paired-comparison tables
 #   inference.jl     tables/tbl_interval_coverage.md
 #   invariance.jl    tables/tbl_invariance_contrasts.md
-#   figures.jl       figures/fg_advantages.png, figures/fg_conceptual.png
-#   figure_warp.jl   figures/fg_warp.png
+#   figures.jl       figures/fg_advantages.pdf, figures/fg_conceptual.pdf
+#   figure_warp.jl   figures/fg_warp.pdf
 #   verify_numbers.jl
 #
 # The other scripts (simulation.jl, simulation_gaps.jl, empirical.jl) write no files; verify_numbers.jl reruns the parts the text

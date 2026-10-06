@@ -212,7 +212,7 @@ function figure2()
     end
 
     resize_to_layout!(fig)
-    safe_save("figures/fg_advantages.png", fig, px_per_unit = 2)
+    safe_save("figures/fg_advantages.pdf", fig)
 
     return fig
 end
@@ -337,7 +337,7 @@ function figure3()
     end
 
     resize_to_layout!(fig)
-    safe_save("figures/fg_conceptual.png", fig, px_per_unit = 2)
+    safe_save("figures/fg_conceptual.pdf", fig)
 
     return fig
 end

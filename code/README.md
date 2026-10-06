@@ -79,3 +79,5 @@ Saving a figure directly into this iCloud-synced directory can fail with
 `SystemError: close: Operation timed out`, and the failed write **deletes** the target file.
 `figures.jl` therefore renders to a temp file and copies it in (`safe_save`); do the same in
 any new plotting script.
+
+`ppb.R` is a base-R port of the PPB point estimate and the four intervals in `inference.jl` (`ppb_interval`, `wald_interval`, `adjusted_ppb_interval`, `ppb_difference_interval`), with usage in its header. `check_ppb_r.jl` confirms agreement with the Julia functions on a grid that includes boundary counts (requires Rscript; not run by `make.jl`).

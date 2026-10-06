@@ -222,9 +222,9 @@ end
 resize_to_layout!(fg)
 # Render to a temp file and copy in: a failed direct write into the iCloud-synced
 # figures/ directory deletes the target (see code/README.md).
-let tmp = joinpath(mktempdir(), "fg_warp.png")
+let tmp = joinpath(mktempdir(), "fg_warp.pdf")
     save(tmp, fg)
-    cp(tmp, "figures/fg_warp.png"; force = true)
+    cp(tmp, "figures/fg_warp.pdf"; force = true)
 end
 
 fg

@@ -23,6 +23,11 @@ results against the manuscript and supplement. It stops at the first failure.
 Use `--no-figures` to regenerate tables and run the checks without plotting.
 Simulation seeds are specified in the analysis code.
 
+For the PPB point estimate and confidence intervals in base R, run
+`source("code/ppb.R")`. Usage examples are in that file's header. The optional
+`code/check_ppb_r.jl` checks the R intervals against the Julia implementation;
+it requires `Rscript` and is separate from the main replication pipeline.
+
 To render the manuscripts after regeneration:
 
 ```sh
