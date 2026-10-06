@@ -232,7 +232,7 @@ The analysis code is available at [github.com/emfeltham/ppb-yes-rate-public](htt
 
 **Ethics approval and consent.** Not applicable. The article reanalyzes publicly available data from published studies; the files contain no names, contact details, or other direct identifiers.
 
-**AI-tool use.** I used AI tools to write and revise the analysis code and to refine the text. I specified the analyses and claims, reviewed all outputs, and take total responsibility for the content.
+**AI declaration.** AI tools were used to write and revise analysis code and to refine the text. I specified the analyses and claims, reviewed all outputs, and take total responsibility for the content.
 
 **Author contributions.** I conceived the study, wrote the code and wrote the manuscript.
 
