@@ -1,0 +1,45 @@
+{
+  "pywitness_commit": "06b9eb43828e3ffdd422900cdc6c4877db2e5f6b",
+  "files": [
+    {
+      "path": "data/pyWitness/data/published/2020_Colloff_Flowe_Smith_etal/Exp1_osf_data.csv",
+      "url": "https://raw.githubusercontent.com/lmickes/pyWitness/06b9eb43828e3ffdd422900cdc6c4877db2e5f6b/data/published/2020_Colloff_Flowe_Smith_etal/Exp1_osf_data.csv",
+      "sha256": "0e27de351a90a2d89ea2b2ebc960ec5037b062192aafb5729bd20fc4a29ab0d3"
+    },
+    {
+      "path": "data/pyWitness/data/published/2020_Colloff_Wixted/Colloff_Wixted_Exp1.csv",
+      "url": "https://raw.githubusercontent.com/lmickes/pyWitness/06b9eb43828e3ffdd422900cdc6c4877db2e5f6b/data/published/2020_Colloff_Wixted/Colloff_Wixted_Exp1.csv",
+      "sha256": "c259acba4d4f6dd56b1e20c175400ae794e7171839514b3f7f3f0ec9fb06db63"
+    },
+    {
+      "path": "data/pyWitness/data/published/2020_Colloff_Wixted/Colloff_Wixted_Exp2.csv",
+      "url": "https://raw.githubusercontent.com/lmickes/pyWitness/06b9eb43828e3ffdd422900cdc6c4877db2e5f6b/data/published/2020_Colloff_Wixted/Colloff_Wixted_Exp2.csv",
+      "sha256": "84b86a65e1fe1f312da5eaad05ebaebd3b186495ec284e99137804e594d65f5d"
+    },
+    {
+      "path": "data/pyWitness/data/published/2020_Colloff_Wixted/Colloff_Wixted_Exp3.csv",
+      "url": "https://raw.githubusercontent.com/lmickes/pyWitness/06b9eb43828e3ffdd422900cdc6c4877db2e5f6b/data/published/2020_Colloff_Wixted/Colloff_Wixted_Exp3.csv",
+      "sha256": "2a3bdbf7cff3f87f428173a576da7a59b96993c7183fa2fa71e31cb730f56130"
+    },
+    {
+      "path": "data/layher2020/layher20_exp2.csv",
+      "url": "https://osf.io/download/nmj63/",
+      "sha256": "633904a4fb7721638558442dbea1fd69a41bafc985afe082c85974cd910100cc"
+    },
+    {
+      "path": "data/layher2020/layher20_exp1.csv",
+      "url": "https://osf.io/download/q5c4n/",
+      "sha256": "56d8737c7206bd0cbb7aa8aa2b4b4e8c50f579247ead1a7dadb09bf21bc6ff47"
+    },
+    {
+      "path": "data/measuring_memory/data_full.csv",
+      "url": "https://osf.io/download/hzu7m/",
+      "sha256": "056f6a52b9339f3e68a49c74053660012c295685427d45686c996bb10752d8d0"
+    },
+    {
+      "path": "data/measuring_memory/dataKey_full.pdf",
+      "url": "https://osf.io/download/gpxq2/",
+      "sha256": "1c4219665520cdfec42dc2c0478ed95f9b57267a272fdd5b337c7100f9827cb0"
+    }
+  ]
+}
