@@ -25,8 +25,6 @@ author:
     affiliations:
       - name: "Columbia University"
         department: "Data Science Institute and Department of Sociology"
-date: today
-date-format: "[Draft:] MMMM D, YYYY"
 bibliography: references_zotero.bib
 csl: apa.csl
 ---
@@ -35,13 +33,13 @@ csl: apa.csl
 
 ## Coordinate systems
 
-Let $H$ and $F$ denote the hit (true positive) and false alarm (false positive) rates. Define PPB $= H + F$ and $J = H - F$. Then the map $(H, F) \mapsto (J, \text{PPB}) = (H - F,\; H + F)$ is a bijection on the unit square with inverse $H = (J + \text{PPB})/2$, $F = (\text{PPB} - J)/2$.
+Let $H$ and $F$ denote the hit (true positive) and false alarm (false positive) rates. Define Positive Predictive Bias (PPB) $= H + F$ and Youden’s $J = H - F$. Then the map $(H, F) \mapsto (J, \text{PPB}) = (H - F,\; H + F)$ is a bijection on the unit square with inverse $H = (J + \text{PPB})/2$, $F = (\text{PPB} - J)/2$.
 
 Under equal-variance Gaussian signal detection theory (EVSDT), the standard parameters $(d', c)$ arise from the same rotation applied after a coordinate-wise probit transform:
 
 $$d' = z(H) - z(F), \qquad -2c = z(H) + z(F)$$ {#eq-sdt-supp}
 
-where $\Phi$ and $\phi$ are the standard-normal cumulative distribution and density functions, respectively, and $z = \Phi^{-1}$ is the quantile (probit) function. Both pairs take a difference and a sum, so their rows are perpendicular; $(J, \text{PPB})$ is an orthogonal map up to the factor $\sqrt{2}$, while $(d', c)$ scales the two rows unequally and so is a rotation followed by a non-uniform scaling. The difference that matters is that $(J, \text{PPB})$ operates on observed rates while $(d', c)$ operates in probit-transformed space.
+where $\Phi$ and $\phi$ are the standard-normal cumulative distribution and density functions, respectively, and $z = \Phi^{-1}$ is the quantile (probit) function. Both pairs use a difference and a sum with perpendicular rows. The $(J, \text{PPB})$ map is orthogonal up to the factor $\sqrt{2}$; $(d', c)$ scales the two rows unequally. The pairs operate in observed-rate and probit-transformed space, respectively.
 
 ## Monotonicity proofs
 
@@ -49,35 +47,35 @@ Under EVSDT the noise distribution is $\mathcal{N}(0, 1)$ and the signal distrib
 
 $$J(d', c) = \Phi(d'/2 - c) - \Phi(-d'/2 - c), \qquad \text{PPB}(d', c) = \Phi(d'/2 - c) + \Phi(-d'/2 - c)$$
 
-**$J$ is strictly increasing in $d'$ at fixed $c$:**
+$J$ is strictly increasing in $d'$ at fixed $c$:
 
 $$\frac{\partial J}{\partial d'} = \tfrac{1}{2}\left[\phi(d'/2 - c) + \phi(-d'/2 - c)\right] > 0$$ {#eq-j-mono}
 
 since $\phi(\cdot) > 0$ everywhere (@eq-j-mono). Thus, at fixed $c$, ordering observers by $J$ coincides with ordering by $d'$.
 
-**PPB is strictly decreasing in $c$ at fixed $d'$:**
+PPB is strictly decreasing in $c$ at fixed $d'$:
 
 $$\frac{\partial \text{PPB}}{\partial c} = -\phi(d'/2 - c) - \phi(-d'/2 - c) < 0$$ {#eq-ppb-mono}
 
 since both terms are strictly negative (@eq-ppb-mono). Thus, at fixed $d'$, ordering observers by PPB coincides with ordering by $-c$, the reverse ordering of $c$.
 
-**Conclusion.** Under EVSDT, $(J, \text{PPB})$ preserves the ordinal structure of $(d', c)$ within each dimension: at fixed $c$, ordering observers by $J$ coincides with ordering by $d'$; at fixed $d'$, ordering by PPB coincides with ordering by $-c$. Across observers who differ on both dimensions simultaneously, the two coordinate systems can rank observers differently (see main text). No distributional assumptions are needed to compute $J$ or PPB.
+Across observers who differ on both dimensions simultaneously, the two coordinate systems can rank observers differently (see main text).
 
 ## Criterion interpretation beyond EVSDT
 
-The ordinal equivalence above links PPB to the *computed* $c = -\frac{1}{2}[z(H) + z(F)]$, which is calculable when both observed rates are interior. The question is what the computed $c$ means.
+The computed index $c = -\frac{1}{2}[z(H) + z(F)]$ is defined when both rates lie in $(0,1)$.
 
-Under EVSDT the computed $c$ recovers the criterion exactly: $c = -\frac{1}{2}[\Phi^{-1}(\Phi(d' - \theta)) + \Phi^{-1}(\Phi(-\theta))] = \theta - d'/2$, a fixed offset from $\theta$. In this case $c$ measures criterion location.
+Under EVSDT the computed $c$ recovers the criterion exactly: $c = -\frac{1}{2}[\Phi^{-1}(\Phi(d' - \theta)) + \Phi^{-1}(\Phi(-\theta))] = \theta - d'/2$, a fixed offset from $\theta$.
 
-Now consider a general SDT model where the noise distribution has CDF $G_n$ and the signal distribution has CDF $G_s$, not necessarily Gaussian. An observer with criterion $\theta$ produces $H = 1 - G_s(\theta)$ and $F = 1 - G_n(\theta)$. The computed $c$ becomes
+For general evidence distributions, let $G_n$ and $G_s$ denote the cumulative distribution functions of noise and signal evidence. An observer with criterion $\theta$ produces $H = 1 - G_s(\theta)$ and $F = 1 - G_n(\theta)$. The computed $c$ becomes
 
 $$c_{\text{comp}} = -\tfrac{1}{2}\bigl[\Phi^{-1}(1 - G_s(\theta)) + \Phi^{-1}(1 - G_n(\theta))\bigr]$$
 
-At interior rates this is well-defined but is a nonlinear function of $\theta$ that depends on the shapes of $G_s$ and $G_n$. Two observers with the same criterion $\theta$ but different latent distributions (e.g., Gaussian vs.\ logistic, or equal vs.\ unequal variance) will generally produce different values of $c_{\text{comp}}$, because the probit transforms rates generated by different evidence distributions onto the same standard-normal scale.
+At interior rates, its relation to $\theta$ depends on the shapes of $G_s$ and $G_n$. Two observers with the same criterion $\theta$ but different latent distributions (e.g., Gaussian vs.\ logistic, or equal vs.\ unequal variance) will generally produce different values of $c_{\text{comp}}$, because the probit transforms rates generated by different evidence distributions onto the same standard-normal scale.
 
-At interior rates, both coordinate pairs remain invertible transformations of $(H, F)$. PPB alone does not determine computed $c$ without $J$. The limitation concerns criterion interpretation: outside EVSDT, $c_{\text{comp}}$ need not recover centered criterion location in Gaussian units. It remains monotone in criterion when the evidence distributions are held fixed, but its values need not identify a common centered location across distributions. PPB remains twice the probability of responding "yes" under equal presentation, without assumptions about latent evidence distributions. The two indexes describe different quantities.
+At interior rates, both coordinate pairs remain invertible transformations of $(H, F)$. PPB alone does not determine computed $c$ without $J$. Outside EVSDT, $c_{\text{comp}}$ need not recover centered criterion location in Gaussian units. It remains monotone in criterion when the evidence distributions are held fixed, but its values need not identify a common centered location across distributions. PPB remains twice the probability of responding "yes" under equal presentation, without assumptions about latent evidence distributions.
 
-**Worked example.** This example uses a different location shift and a variance-standardized $t$ distribution compared with the main simulation. Consider four distribution families, each with signal location $\mu = 2$ and noise location 0, with criteria $\theta$ chosen so that PPB $= H + F = 1.20$ exactly. The $t(3)$ distribution is scaled to unit variance. The common location shift does not hold discriminability constant across distributions with different variances and tails. Matching PPB fixes the sum of the two rates but leaves their difference, $J$, free to vary. Differences in computed $c$ must therefore be interpreted alongside differences in $J$.
+**Worked example.** Consider four distribution families, each with signal location $\mu = 2$ and noise location 0, with criteria $\theta$ chosen so that PPB $= H + F = 1.20$ exactly. The $t(3)$ distribution is scaled to unit variance. The common location shift does not hold discriminability constant across distributions with different variances and tails. Matching PPB fixes the sum of the two rates but leaves their difference, $J$, free to vary.
 
 | Distribution | Parameters | $\theta$ | $H$ | $F$ | PPB | $J$ | $c_{\text{comp}}$ |
 |---|---|---|---|---|---|---|---|
@@ -86,15 +84,11 @@ At interior rates, both coordinate pairs remain invertible transformations of $(
 | Gaussian UV | $\sigma_s = 2, \sigma_n = 1$ | 0.270 | 0.806 | 0.394 | 1.20 | 0.413 | $-0.297$ |
 | $t(3)$ (scaled) | $\text{Var} = 1$ | 0.468 | 0.962 | 0.238 | 1.20 | 0.723 | $-0.529$ |
 
-All four observers have the same PPB (1.20), but $J$ ranges from $0.413$ to $0.723$ and computed $c$ from $-0.53$ to $-0.30$, moving monotonically with $J$. The different values of $c$ accompany differences in $J$ at fixed PPB. Matching the families on both $H$ and $F$, which each of them permits (two free parameters, location and criterion, against two constraints), makes $J$, PPB, $c$ and every other function of $(H, F)$ agree exactly.
-
-PPB reports $H + F = 1.20$ for all four families, regardless of the distributions that generated the rates. For the equal-variance Gaussian family, $c$ recovers centered criterion location. In the other families, $c$ tracks criterion position monotonically when the distributions are held fixed, but its values need not identify a common centered location across families.
+All four observers have the same PPB (1.20), but $J$ ranges from $0.413$ to $0.723$ and computed $c$ from $-0.53$ to $-0.30$, moving monotonically with $J$. Matching the families on both $H$ and $F$, which each of them permits (two free parameters, location and criterion, against two constraints), makes $J$, PPB, $c$ and every other function of $(H, F)$ agree exactly.
 
 ## PPB as the criterion of the equal-variance uniform model
 
-PPB’s computation and yes-rate interpretation require no assumptions about latent evidence distributions. Its interpretation as criterion location uses the equal-variance uniform model, derived below.
-
-Let the noise distribution be uniform on $[0, 1]$ and the signal distribution uniform on $[\delta, 1 + \delta]$, with $0 \le \delta \le 1$; this is double high-threshold theory written as a pair of latent distributions [@macmillan_response_1990]. An observer says yes when the evidence exceeds a criterion $\theta$, the raw location on the latent axis as in §1.2; $\theta$ is not itself a centered index. Macmillan and Creelman write $k$ for their *centered* index, which is $c_{\text{rect}}$ below, so the two symbols are kept apart here. For $\delta < \theta < 1$ both rates are interior to $(0, 1)$, and
+Let the noise distribution be uniform on $[0, 1]$ and the signal distribution uniform on $[\delta, 1 + \delta]$, with $0 \le \delta \le 1$; this is double high-threshold theory written as a pair of latent distributions [@macmillan_response_1990]. An observer says yes when the evidence exceeds the criterion $\theta$ on the latent axis (§1.2). Macmillan and Creelman’s $k$ denotes the centered index $c_{\text{rect}}$. For $\delta < \theta < 1$ both rates are interior to $(0, 1)$, and
 
 $$F = 1 - \theta, \qquad H = 1 - (\theta - \delta) = 1 - \theta + \delta$$ {#eq-rect-rates}
 
@@ -108,9 +102,11 @@ $$c_{\text{rect}} = \theta - \frac{1 + \delta}{2} = \frac{2 + \delta - \text{PPB
 
 @eq-crect-supp is Macmillan and Creelman's Equation 17 (1990, p. 406), $k = 0.5[1 - (F + H)]$, exactly: their $k$ is this centered index, not the raw criterion $\theta$. The discriminability parameter has dropped out of the centered criterion expression: at a fixed $c_{\text{rect}}$, PPB is constant as $\delta$ varies within the overlap region. This is parameter separation under the model, not statistical independence or a prediction about which criterion observers hold fixed.
 
-Two qualifications. First, @eq-crect-supp holds for $\delta \le \theta \le 1$, including the endpoints. Outside that interval, a rate equals 0 or 1, so $J$ need not recover $\delta$ and $(1-\text{PPB})/2$ need not locate the actual centered criterion, although the transform remains defined. Boundary rates do not always prevent criterion identification: under the restriction $0 \le \delta \le 1$, $H=1$ and $F=0$ force $\delta=\theta=1$. If the model is extended to $\delta>1$, any criterion in $[1,\delta]$ produces those perfect rates. Second, PPB/2 equals the overall proportion of "yes" responses, $\pi H + (1 - \pi)F$ for signal probability $\pi$, when $\pi = 1/2$ (or when $H=F$). This equality under equal presentation is the basis of Macmillan and Creelman’s yes rate. The criterion reading itself does not require $\pi = 1/2$, because the formula uses conditional rates. Changing prevalence may nevertheless change those rates through the observer's decision rule.
+@eq-crect-supp holds for $\delta \le \theta \le 1$, including the endpoints. Outside that interval, a rate equals 0 or 1, so $J$ need not recover $\delta$ and $(1-\text{PPB})/2$ need not locate the actual centered criterion, although the transform remains defined. Boundary rates do not always prevent criterion identification: under the restriction $0 \le \delta \le 1$, $H=1$ and $F=0$ force $\delta=\theta=1$. If the model is extended to $\delta>1$, any criterion in $[1,\delta]$ produces those perfect rates.
 
-**The identity link.** @decarlo_signal_1998 shows that signal detection models are generalized linear models: the observed rates are passed through a link function, and $d'$ is a difference and the criterion, up to scale, is a sum of the link-transformed rates,
+PPB/2 equals the overall proportion of "yes" responses, $\pi H + (1 - \pi)F$ for signal probability $\pi$, when $\pi = 1/2$ (or when $H=F$). This equality under equal presentation is the basis of Macmillan and Creelman’s yes rate. The criterion reading itself does not require $\pi = 1/2$, because the formula uses conditional rates. Changing prevalence may nevertheless change those rates through the observer's decision rule.
+
+@decarlo_signal_1998 shows that signal detection models are generalized linear models: the observed rates are passed through a link function, and $d'$ is a difference and the criterion, up to scale, is a sum of the link-transformed rates,
 
 $$d' = z(H) - z(F), \qquad c = -\tfrac{1}{2}[z(H) + z(F)]$$ {#eq-links}
 
@@ -118,7 +114,7 @@ with $z = \Phi^{-1}$ the probit link. Substituting the affine link $z(p) = p - \
 
 $$\left(H - \tfrac{1}{2}\right) - \left(F - \tfrac{1}{2}\right) = J, \qquad -\tfrac{1}{2}\left[\left(H - \tfrac{1}{2}\right) + \left(F - \tfrac{1}{2}\right)\right] = \frac{1 - \text{PPB}}{2} = c_{\text{rect}}$$ {#eq-identity-link}
 
-@eq-identity-link and @eq-links are therefore the same pair of contrasts computed under two links. The shift by $\tfrac{1}{2}$ only fixes the origin. Under the identity link proper, $z(p) = p$, the same contrasts give $J$ and $-\text{PPB}/2$, which places the uncentered bias contrast at $-1/2$ rather than zero when PPB $= 1$; nothing else changes, because the shift cancels in the difference and is a constant in the sum. The properties derived in §§2--4 are properties of the link: it is defined on the closed square $[0, 1]^2$ (boundary stability), it is linear (exact aggregation), and it composes with a linear predictor without curvature (covariate effects in probability units). Macmillan and Creelman also report a binomial sampling result for the yes rate, attributed to Morgan. Sampling distributions depend on trial allocation: §5 distinguishes random trial-type allocation from the fixed signal and noise counts used here.
+@eq-identity-link and @eq-links compute the same pair of contrasts under two links. The shift by $\tfrac{1}{2}$ cancels in the difference and adds a constant to the sum. With the identity link proper, $z(p) = p$, the contrasts give $J$ and $-\text{PPB}/2$; the uncentered bias contrast equals $-1/2$ when PPB $= 1$. The linear link preserves computability at boundary rates, exact aggregation, and additive covariate effects in probability units (§§2--4). Macmillan and Creelman also report a binomial sampling result for the yes rate, attributed to Morgan. Sampling distributions depend on trial allocation: §5 distinguishes random trial-type allocation from the fixed signal and noise counts used here.
 
 ## The Snodgrass and Corwin invariance test applied to PPB
 
@@ -130,21 +126,19 @@ Snodgrass and Corwin's [-@snodgrass_pragmatics_1988] Table 3 reports cell means 
 | Neutral | 0.826, 0.632 | 0.161, 0.303 | 0.987, 0.935 | $-0.026$ | $-0.053$ |
 | Liberal | 0.868, 0.723 | 0.219, 0.397 | 1.087, 1.120 | $+0.017$ | $+0.001$ |
 
-: PPB computed from Snodgrass and Corwin's Table 3 cell means. Gaps are high-imagery minus low-imagery, in each index's own criterion units. {#tbl-sc-invariance}
+: Snodgrass and Corwin (1988), Table 3: PPB $= H+F$ from cell mean rates, and high-minus-low imagery gaps in $c_{\text{rect}}=(1-\text{PPB})/2$ and reported Gaussian $c$. Gaps use each index’s criterion units. {#tbl-sc-invariance}
 
 Their test asks whether a bias index shows a payoff effect, no imagery effect and no interaction. The payoff effect is large for PPB, which moves from about 0.75 to about 1.10 as the payoff goes from conservative to liberal. The imagery gaps in @tbl-sc-invariance are the quantity their test requires to be null. Their directions differ across payoff conditions. Their numerical magnitudes cannot compare invariance across the two criterion scales. For $c$, the original subject-level analysis found no significant imagery or interaction effect.
 
-These condition means alone do not provide the participant-level variances and covariances needed for the within-subjects tests. PPB computed from mean rates equals mean individual PPB, while $B_r$ and $c$ generally give different summaries when computed from mean rates. The relevant comparisons are high-minus-low imagery effects within each index, expressed in that index’s own units. These descriptive cell means cannot determine whether PPB would meet Snodgrass and Corwin’s ANOVA criteria.
+These condition means lack the participant-level variances and covariances needed for the within-subjects tests, so they cannot determine whether PPB would meet Snodgrass and Corwin’s ANOVA criteria. Mean PPB equals PPB computed from mean rates. For $B_r$ and $c$, those summaries generally differ.
 
 ### The test on open subject-level data
-
-I ran the test on two open datasets whose designs cross a discriminability manipulation with a bias manipulation.
 
 *Layher, Dixit and Miller* [-@layher_who_2020], OSF project 4k2hb, files `layher20_exp1.csv` and `layher20_exp2.csv` (session-level counts; the trial-level file for Experiment 1 reproduces every count). In each experiment 39 participants took old/new face-recognition tests in ten sessions, having studied the faces once in five sessions and five times in the other five. In Experiment 1 the bias manipulation was a payoff matrix (conservative, neutral, liberal), with 500 targets and 500 lures per participant and cell. The five-presentation sessions were always sessions 6--10, so strength is confounded with practice. In Experiment 2 the bias manipulation was the proportion of old items at test (25, 50 or 75\%), with 1,000 trials per participant and cell, and the order of the strength conditions was counterbalanced (20 and 19 participants).
 
 *Measuring Memory Project* [@starns_assessing_2019], OSF project 92ahy, file `Data/data_full.csv`, conditions decoded from `dataKey_full.pdf`. Each of 459 participants studied a word list once, twice or three times and received no bias instruction, a conservative instruction or a liberal instruction (nine between-subjects cells of 48--53), then made old/new decisions on 50 targets and 50 lures. I used the binary responses.
 
-For each participant and cell I computed $H$ and $F$ raw and with the log-linear correction $(x + 0.5)/(N + 1)$, which is the one Snodgrass and Corwin recommend. The primary analysis computes PPB and $J$ from raw rates, and $c$, $d'$ and $B_r$ from corrected rates; raw $B_r$ is $0/0$ for two Measuring Memory participants. Layher et al.'s designs were analysed by two-way repeated-measures analysis of variance, with each effect tested against its own subject-by-effect error term and no sphericity correction; the Measuring Memory design by two-way between-subjects analysis of variance with Type III sums of squares. The ANOVA-criteria column applies Snodgrass and Corwin’s criteria at $\alpha = .05$: a bias index passes if the bias effect is significant and neither the strength effect nor the interaction is; $J$ and $d'$, discrimination indexes, pass if the strength effect is significant and neither the bias effect nor the interaction is. A pass means that the index met these criteria; it does not establish equivalence or invariance.
+For each participant and cell, PPB and $J$ use raw rates. I computed $c$, $d'$ and $B_r$ with the log-linear correction $(x + 0.5)/(N + 1)$, which Snodgrass and Corwin recommend for every index. Raw $B_r$ is $0/0$ for two Measuring Memory participants. Layher et al.'s designs were analysed by two-way repeated-measures analysis of variance, with each effect tested against its own subject-by-effect error term and no sphericity correction; the Measuring Memory design by two-way between-subjects analysis of variance with Type III sums of squares. The ANOVA-criteria column applies Snodgrass and Corwin’s criteria at $\alpha = .05$: a bias index passes if the bias effect is significant and neither the strength effect nor the interaction is; $J$ and $d'$, discrimination indexes, pass if the strength effect is significant and neither the bias effect nor the interaction is. A pass means that the index met these criteria; it does not establish equivalence or invariance.
 
 | Index | Strength $F$ (1, 38) | Bias $F$ (2, 76) | Interaction $F$ (2, 76) | ANOVA criteria |
 |---|---|---|---|---|
@@ -153,12 +147,10 @@ For each participant and cell I computed $H$ and $F$ raw and with the log-linear
 | $J$ | 103.99 ($<.001$) | 38.79 ($<.001$) | 11.83 ($<.001$) | fail |
 | $d'$ | 127.24 ($<.001$) | 40.46 ($<.001$) | 15.65 ($<.001$) | fail |
 | $B_r$ | 0.20 (.658) | 222.26 ($<.001$) | 2.01 (.141) | pass |
-| PPB, log-linear | 0.23 (.633) | 205.16 ($<.001$) | 1.62 (.204) | pass |
-| $J$, log-linear | 103.99 ($<.001$) | 38.79 ($<.001$) | 11.83 ($<.001$) | fail |
 | $c$, $1/2N$ | 0.00 (.960) | 165.73 ($<.001$) | 0.06 (.940) | pass |
 | $B_r$, raw | 0.20 (.656) | 222.29 ($<.001$) | 2.03 (.139) | pass |
 
-: Layher et al. (2020), Experiment 1: strength (faces studied 1 or 5 times) $\times$ payoff matrix, both within subjects, $N = 39$. Entries are $F$ ($p$). The first five rows are the primary analysis; the next four are sensitivity rows. {#tbl-inv-layher1}
+: Layher et al. (2020), Experiment 1: faces studied 1 or 5 times $\times$ payoff matrix, within subjects ($N = 39$). Entries are ANOVA $F$ statistics ($p$ values). PPB and $J$ use raw rates; $c$, $d'$ and $B_r$ use log-linear rates unless otherwise marked. {#tbl-inv-layher1}
 
 | Index | Strength $F$ (1, 38) | Bias $F$ (2, 76) | Interaction $F$ (2, 76) | ANOVA criteria |
 |---|---|---|---|---|
@@ -167,12 +159,10 @@ For each participant and cell I computed $H$ and $F$ raw and with the log-linear
 | $J$ | 79.23 ($<.001$) | 47.33 ($<.001$) | 21.73 ($<.001$) | fail |
 | $d'$ | 82.21 ($<.001$) | 31.70 ($<.001$) | 20.15 ($<.001$) | fail |
 | $B_r$ | 5.91 (.020) | 109.25 ($<.001$) | 1.65 (.198) | fail |
-| PPB, log-linear | 23.27 ($<.001$) | 95.70 ($<.001$) | 5.29 (.007) | fail |
-| $J$, log-linear | 79.39 ($<.001$) | 47.11 ($<.001$) | 21.87 ($<.001$) | fail |
 | $c$, $1/2N$ | 17.32 ($<.001$) | 74.16 ($<.001$) | 4.27 (.017) | fail |
 | $B_r$, raw | 5.85 (.020) | 109.03 ($<.001$) | 1.66 (.198) | fail |
 
-: Layher et al. (2020), Experiment 2: strength $\times$ base rate (25, 50 or 75\% old), both within subjects, $N = 39$. Entries are $F$ ($p$). {#tbl-inv-layher2}
+: Layher et al. (2020), Experiment 2: faces studied 1 or 5 times $\times$ base rate (25, 50 or 75\% old), within subjects ($N = 39$). Entries are ANOVA $F$ statistics ($p$ values). PPB and $J$ use raw rates; $c$, $d'$ and $B_r$ use log-linear rates unless otherwise marked. {#tbl-inv-layher2}
 
 | Index | Strength $F$ (2, 450) | Bias $F$ (2, 450) | Interaction $F$ (4, 450) | ANOVA criteria |
 |---|---|---|---|---|
@@ -181,8 +171,6 @@ For each participant and cell I computed $H$ and $F$ raw and with the log-linear
 | $J$ | 24.04 ($<.001$) | 0.27 ($.766$) | 1.59 ($.177$) | pass |
 | $d'$ | 29.86 ($<.001$) | 0.15 (.864) | 1.62 (.167) | pass |
 | $B_r$ | 4.39 (.013) | 12.27 ($<.001$) | 0.70 (.595) | fail |
-| PPB, log-linear | 0.60 (.548) | 14.74 ($<.001$) | 1.49 (.203) | pass |
-| $J$, log-linear | 24.04 ($<.001$) | 0.27 ($.766$) | 1.59 ($.177$) | pass |
 | $c$, $1/2N$ | 2.03 (.133) | 13.51 ($<.001$) | 1.08 (.364) | pass |
 | $B_r$, raw ^a^ | 4.58 (.011) | 10.59 ($<.001$) | 0.65 (.626) | fail |
 | PPB, Type II | 0.58 (.560) | 15.08 ($<.001$) | 1.49 (.203) | pass |
@@ -190,23 +178,23 @@ For each participant and cell I computed $H$ and $F$ raw and with the log-linear
 | $d'$, Type II | 29.88 ($<.001$) | 0.17 (.848) | 1.62 (.167) | pass |
 | $B_r$, Type II | 4.35 (.013) | 12.50 ($<.001$) | 0.70 (.595) | fail |
 
-: Measuring Memory Project (Starns et al., 2019): strength (words studied 1, 2 or 3 times) $\times$ bias instruction (none, conservative, liberal), between subjects, $N = 459$ (48--53 per cell). Entries are $F$ ($p$); Type III sums of squares unless marked Type II. ^a^ Two participants with $H = 1$, $F = 0$, where raw $B_r$ is $0/0$, are excluded ($N = 457$; error df 448). {#tbl-inv-mm}
+: Measuring Memory Project (Starns et al., 2019): words studied 1, 2 or 3 times $\times$ bias instruction (none, conservative, liberal), between subjects ($N = 459$; 48--53 per cell). Entries are ANOVA $F$ statistics ($p$ values), using Type III sums of squares unless marked Type II. PPB and $J$ use raw rates; $c$, $d'$ and $B_r$ use log-linear rates unless otherwise marked. ^a^ Two participants with $H=1$, $F=0$, for whom raw $B_r$ is undefined, are excluded ($N = 457$; error df 448). {#tbl-inv-mm}
 
-PPB and $c$ meet Snodgrass and Corwin’s ANOVA criteria under payoffs and instructions, but do not meet them under base rates. This is a description of test outcomes, not evidence that either index is invariant. Raw $J$ and its log-linear sensitivity version do not meet these criteria in either Layher experiment but meet them in Measuring Memory. $B_r$ passes under payoffs but fails the Measuring Memory test on strength; $d'$ fails Layher et al.'s Experiment 1 because payoff also moves it ($F(2, 76) = 40.46$) and the two factors interact. Under the base-rate manipulation every index fails, $d'$ included, so that manipulation does not isolate bias from discriminability in these data and cannot discriminate among bias indexes.
+PPB and $c$ meet Snodgrass and Corwin’s ANOVA criteria under payoffs and instructions, but do not meet them under base rates. $J$ does not meet these criteria in either Layher experiment but meets them in Measuring Memory. $B_r$ passes under payoffs but fails the Measuring Memory test on strength; $d'$ fails Layher et al.'s Experiment 1 because payoff also moves it ($F(2, 76) = 40.46$) and the two factors interact. Under the base-rate manipulation every index fails, $d'$ included, so that manipulation does not isolate bias from discriminability in these data and cannot discriminate among bias indexes.
 
 | Strength | PPB con. | PPB neut. | PPB lib. | $c$ con. | $c$ neut. | $c$ lib. |
 |---|---|---|---|---|---|---|
 | 1$\times$ | 0.413 | 0.944 | 1.577 | 0.960 | 0.087 | $-0.912$ |
 | 5$\times$ | 0.452 | 0.964 | 1.550 | 0.968 | 0.072 | $-0.911$ |
 
-: Cell means of PPB (raw rates) and $c$ (log-linear rates), Layher et al. (2020), Experiment 1. Columns are the conservative, neutral and liberal payoff matrices. {#tbl-inv-means-layher1}
+: Cell means of PPB (raw rates) and $c$ (log-linear rates), Layher et al. (2020), Experiment 1. Columns denote conservative, neutral and liberal payoffs. {#tbl-inv-means-layher1}
 
 | Strength | PPB 25\% | PPB 50\% | PPB 75\% | $c$ 25\% | $c$ 50\% | $c$ 75\% |
 |---|---|---|---|---|---|---|
 | 1$\times$ | 0.402 | 0.722 | 1.265 | 0.917 | 0.387 | $-0.426$ |
 | 5$\times$ | 0.561 | 0.883 | 1.252 | 0.679 | 0.181 | $-0.378$ |
 
-: Cell means of PPB and $c$, Layher et al. (2020), Experiment 2. Columns are the proportion of old items at test. {#tbl-inv-means-layher2}
+: Cell means of PPB (raw rates) and $c$ (log-linear rates), Layher et al. (2020), Experiment 2. Columns denote the proportion of old items at test. {#tbl-inv-means-layher2}
 
 | Strength | PPB none | PPB con. | PPB lib. | $c$ none | $c$ con. | $c$ lib. |
 |---|---|---|---|---|---|---|
@@ -214,19 +202,19 @@ PPB and $c$ meet Snodgrass and Corwin’s ANOVA criteria under payoffs and instr
 | 2$\times$ | 1.063 | 1.002 | 1.088 | $-0.136$ | $-0.018$ | $-0.201$ |
 | 3$\times$ | 1.045 | 1.025 | 1.105 | $-0.130$ | $-0.076$ | $-0.228$ |
 
-: Cell means of PPB and $c$, Measuring Memory Project. Columns are the bias instructions. {#tbl-inv-means-mm}
+: Cell means of PPB (raw rates) and $c$ (log-linear rates), Measuring Memory Project. Columns denote bias instructions. {#tbl-inv-means-mm}
 
 In Experiment 1 of Layher et al. the strength differences in PPB are $+0.039$, $+0.020$ and $-0.027$ from the conservative to the liberal payoff. That is the sign pattern a constant $c$ predicts, because under EVSDT a fixed positive $c$ raises PPB as $d'$ grows and a fixed negative $c$ lowers it (main text, Definition and Properties), but the interaction is not significant ($p = .204$). The test has limited ability to separate PPB from $c$ when $d'$ changes too little to move them appreciably apart, and here the strength manipulation raised mean $d'$ from about 0.4 to about 0.8.
 
-**Sensitivity.** Computing PPB from log-linear rates, as Snodgrass and Corwin do for every index, leaves all ANOVA $F$ statistics unchanged when all cells have the same trial count (Experiment 1, Measuring Memory), because the corrected sum is an affine function of the raw one. In Experiment 2, where trial counts differ across base rates, these statistics change by at most 0.13. Replacing the log-linear correction for $c$ with the $1/2N$ correction, or computing $B_r$ from raw rates, did not change whether the indexes met the ANOVA criteria. For the Measuring Memory design, Type II sums of squares changed the ANOVA $F$ statistics in the first or second decimal without changing whether the criteria were met. For the within-subjects designs, the Greenhouse--Geisser lower bound, which tests every effect on 1 and 38 df and is the most conservative sphericity correction, also left the classifications unchanged.
+Sensitivity. Replacing the log-linear correction for $c$ with the $1/2N$ correction did not change whether it met the ANOVA criteria. Using raw rates for $B_r$ also left the classifications unchanged, although this required excluding two Measuring Memory participants for whom $B_r$ was undefined. For the Measuring Memory design, Type II sums of squares changed the ANOVA $F$ statistics in the first or second decimal without changing whether the criteria were met. For the within-subjects designs, the Greenhouse--Geisser lower bound, which tests every effect on 1 and 38 df and is the most conservative sphericity correction, also left the classifications unchanged.
 
-Three caveats. Layher et al.'s faces are poorly discriminated (cell-mean $d'$ from 0.25 to 1.10), and strength in their Experiment 1 is confounded with practice. The Measuring Memory Project induces bias by instruction, which moved PPB less than payoffs did, and is between subjects. Neither dataset manipulates word imagery, so neither is a replication of Snodgrass and Corwin's design.
+Layher et al.'s faces are poorly discriminated (cell-mean $d'$ from 0.25 to 1.10), and strength in their Experiment 1 is confounded with practice. The Measuring Memory Project induces bias by instruction, which moved PPB less than payoffs did, and is between subjects. Neither dataset manipulates word imagery, so neither is a replication of Snodgrass and Corwin's design.
 
 ### Strength contrasts with uncertainty
 
 {{< include tables/tbl_invariance_contrasts.md >}}
 
-These contrasts were selected for the present reanalysis. Within each bias condition they compare the highest and lowest study strength; the conservative-minus-liberal contrast compares those strength effects. The paired Layher analysis retains the covariance among each participant's cells. Measuring Memory uses independent-group means with Welch degrees of freedom. Intervals containing zero leave a range of departures unresolved. In particular, the Layher PPB difference of strength differences includes effects appreciably different from zero. Under conservative instructions in Measuring Memory, the condition-specific confidence intervals for both PPB and $c$ exclude zero even though the overall ANOVA tests detect no departure. This mixed evidence does not support a general claim of invariance.
+Within each bias condition the contrasts compare the highest and lowest study strength; the conservative-minus-liberal contrast compares those strength effects. The paired Layher analysis retains the covariance among each participant's cells. Measuring Memory uses independent-group means with Welch degrees of freedom. Intervals containing zero leave a range of departures unresolved. In particular, the Layher PPB difference of strength differences includes effects appreciably different from zero. Under conservative instructions in Measuring Memory, the condition-specific confidence intervals for both PPB and $c$ exclude zero even though the overall ANOVA tests detect no departure.
 
 # Boundary Stability
 
@@ -250,7 +238,7 @@ $$P(H = 0 \text{ or } H = 1) = (1 - H^*)^{n_s} + (H^*)^{n_s}$$ {#eq-boundary-pro
 | 0.90  |  20  | $\approx 0.122$ |
 | 0.95  |  20  | $\approx 0.358$ |
 
-: Probability of observing an extreme rate ($H = 0$ or $H = 1$) as a function of true rate and the number of *signal* trials. The same table applies to $F$ and $n_n$. The main text reports total trials per subject, split evenly, so its $n = 20$ is $n_s = n_n = 10$ here and its $n = 40$ is $n_s = n_n = 20$. {#tbl-boundary}
+: Probability of a boundary hit rate ($H=0$ or $H=1$), by true rate $H^*$ and signal-trial count $n_s$. The same formula applies to $F^*$ and noise-trial count $n_n$. The main text’s total $n = 20$ is $n_s = n_n = 10$ here; $n = 40$ is $n_s = n_n = 20$. {#tbl-boundary}
 
 @tbl-boundary gives one rate at a time. The probability of hitting *at least one* boundary across both rates follows from the independence of signal and noise trial counts:
 
@@ -270,7 +258,7 @@ $$\frac{d}{dx}\Phi^{-1}(x) = \frac{1}{\phi(\Phi^{-1}(x))}$$ {#eq-probit-deriv}
 | 0.01 | 37.5 | 15.0x |
 | 0.001 | 297 | 118x |
 
-: Probit amplification, from @eq-probit-deriv. A perturbation $\Delta H$ near $H = 0.01$ is amplified 37.5-fold in $z(H)$ against 2.5-fold near $H = 0.50$, a relative factor of 15 (third column). PPB has uniform amplification: $\partial \text{PPB} / \partial H = 1$ everywhere. {#tbl-amplification}
+: Probit amplification from @eq-probit-deriv. A small perturbation $\Delta H$ near $H = 0.01$ is amplified 37.5-fold in $z(H)$ against 2.5-fold near $H = 0.50$, a relative factor of 15 (third column). For PPB, $\partial \text{PPB}/\partial H=1$ everywhere. {#tbl-amplification}
 
 ## Log-linear correction bias
 
@@ -286,17 +274,17 @@ Combining this shrinkage with the probit amplification (@eq-probit-deriv), the f
 
 $$\Delta c \approx -\frac{1}{2}\left[\frac{0.5 - H^*}{(n_s + 1)\,\phi(\Phi^{-1}(H^*))} + \frac{0.5 - F^*}{(n_n + 1)\,\phi(\Phi^{-1}(F^*))}\right]$$ {#eq-correction-bias}
 
-This expression propagates the expected change in each rate; it is not the full expected bias of a nonlinear transformed estimator. Because the probit is nonlinear, averaging transformed sample rates differs from transforming their expected rates. This contributes additional bias, so the approximation can err in either direction. At $H = 0.95$, $F = 0.20$, and $n_s = n_n = 10$, it gives $+0.150$, whereas exact expected bias is $+0.100$. The main results therefore use enumeration rather than this local approximation. With equal denominators, the shrinkage contribution in @eq-correction-bias points toward zero because $|0.5 - p| / \phi(\Phi^{-1}(p))$ increases with $|z(p)|$; this alone is not a proof about the full expectation. With $n_s \neq n_n$ the shrinkages are weighted unequally and the sign can reverse: at $z(H) = 2$, $z(F) = -1.5$, $n_s = 1000$ and $n_n = 10$, the correction moves $c$ from $-0.25$ to $-0.33$ in expectation ($-0.40$ to first order). The corresponding distortion in PPB, from the same shrinkage without any amplification, is:
+This expression propagates the expected change in each rate; it is not the full expected bias of a nonlinear transformed estimator. Because the probit is nonlinear, averaging transformed sample rates differs from transforming their expected rates. This contributes additional bias, so the approximation can err in either direction. At $H = 0.95$, $F = 0.20$, and $n_s = n_n = 10$, it gives $+0.150$, whereas exact expected bias is $+0.100$. The main results therefore use enumeration rather than this local approximation. With equal denominators, the shrinkage contribution in @eq-correction-bias points toward zero because $|0.5 - p| / \phi(\Phi^{-1}(p))$ increases with $|z(p)|$. With $n_s \neq n_n$ the shrinkages are weighted unequally and the sign can reverse: at $z(H) = 2$, $z(F) = -1.5$, $n_s = 1000$ and $n_n = 10$, the correction moves $c$ from $-0.25$ to $-0.33$ in expectation ($-0.40$ to first order). The corresponding distortion in PPB, from the same shrinkage without any amplification, is:
 
 $$\Delta \text{PPB} = \frac{0.5 - H^*}{n_s + 1} + \frac{0.5 - F^*}{n_n + 1}$$
 
-which is bounded and shrinks as $O(1/n)$, but depends on the operating point. PPB itself needs no correction, so @eq-correction-bias has no counterpart that is ever applied in practice; the display is there to show what would be given up.
+which is bounded and shrinks as $O(1/n)$, but depends on the operating point $(H^*, F^*)$. Applying the log-linear correction to PPB would introduce this bias; raw PPB requires no correction.
 
 ## The $1/2N$ correction
 
 The $1/2N$ correction [see @macmillan_detection_1985] replaces only the extreme values: $H = 0 \mapsto 1/(2n_s)$, $H = 1 \mapsto 1 - 1/(2n_s)$. This introduces a discontinuity: a subject with $H = (n_s - 1)/n_s$ is uncorrected, while a subject with $H = 1$ jumps to $1 - 1/(2n_s)$. With $n_s = 20$, the probit value jumps from $z(0.95) = 1.645$ to $z(0.975) = 1.960$, a shift of 0.315 in $z$-space.
 
-Both corrections produce finite estimates but can introduce finite-sample bias relative to population $c$; cancellation occurs when $F = 1 - H$. Raw PPB requires neither correction.
+Both corrections produce finite estimates but can introduce finite-sample bias relative to population $c$; with equal trial counts for signal and noise, cancellation occurs when $F = 1 - H$. Raw PPB requires neither correction.
 
 # Aggregation Discrepancy
 
@@ -314,7 +302,7 @@ For $J_i < 1$, $F_i=(1-J_i)B_{ri}$. With consistently normalized common-weight m
 
 $$B_r(\bar H,\bar F)=\overline{B_r}-\frac{\operatorname{Cov}(J,B_r)}{1-\bar J}$$ {#eq-br-aggregation}
 
-Thus common $J$, common $B_r$, or zero covariance suffices for exact aggregation. The first two conditions are not necessary. $B_r$ computed from mean rates is a weighted average of individual $B_r$ values, with each observer’s original weight multiplied by $1-J_i$, the width of that observer’s uncertain region. Mean individual $B_r$ uses the original observer weights alone.
+Thus common $J$, common $B_r$, or zero covariance suffices for exact aggregation. $B_r$ computed from mean rates is a weighted average of individual $B_r$ values, with each observer’s original weight multiplied by $1-J_i$, the width of that observer’s uncertain region. Mean individual $B_r$ uses the original observer weights alone.
 
 ## $c$ does not aggregate exactly
 
@@ -355,7 +343,7 @@ The second derivative (@eq-probit-second) grows rapidly near the boundaries:
 | 0.90 | 41.6 |
 | 0.95 | 155 |
 
-: Second derivative of the probit function, entering @eq-agg-approx. The aggregation discrepancy is proportional to $(\Phi^{-1})''(\mu) \times \sigma^2$, so it grows rapidly as mean rates approach boundaries. {#tbl-second-deriv}
+: Probit second derivative used in @eq-agg-approx. Each rate’s second-order contribution to the aggregation discrepancy is proportional to its curvature times its variance. {#tbl-second-deriv}
 
 ## Worked example
 
@@ -366,11 +354,11 @@ Consider $K = 100$ subjects with $\mu_H = 0.90$, $\sigma_H = 0.08$ and $\mu_F = 
 
 $$\bar{c} - c(\bar{H}, \bar{F}) \approx -\tfrac{1}{4}(0.266 - 0.069) = -0.049$$
 
-For context, $c(\mu_H, \mu_F) = -0.5[\Phi^{-1}(0.90) + \Phi^{-1}(0.15)] \approx -0.123$. The second-order approximation ($-0.049$) underestimates the simulated discrepancy ($-0.059$) because the probit's higher-order terms are non-negligible when rates are this extreme; both are a substantial fraction of the magnitude of $c$ at the population-mean rates, $c(\mu_H, \mu_F)$.
+$c(\mu_H, \mu_F) = -0.5[\Phi^{-1}(0.90) + \Phi^{-1}(0.15)] \approx -0.123$. The second-order approximation ($-0.049$) underestimates the simulated discrepancy ($-0.059$) because the probit's higher-order terms are non-negligible when rates are this extreme; both are a substantial fraction of the magnitude of $c$ at the population-mean rates, $c(\mu_H, \mu_F)$.
 
 ## When do the $H$ and $F$ terms cancel?
 
-In typical applied settings, $H > 0.5$ and $F < 0.5$, so the two terms in @eq-agg-approx have opposite signs and partially cancel. When rates are symmetric about 0.5 with equal variances (e.g., $\mu_H = 0.70$, $\mu_F = 0.30$, $\sigma_H = \sigma_F = 0.08$), cancellation is nearly exact and the discrepancy is negligible. But cancellation degrades as rates become asymmetric: in the worked example above ($\mu_H = 0.90$, $\mu_F = 0.15$), the $F$-term offsets only 26\% of the $H$-term. Cancellation of the second-order approximation requires $(\Phi^{-1})''(\mu_H)\,\sigma^2_H = -(\Phi^{-1})''(\mu_F)\,\sigma^2_F$, which depends on the specific parameter configuration. This condition need not cancel higher-order terms. Mirrored population distributions of $H$ and $1-F$ do cancel the full expected probit contributions, but independent finite samples need not reproduce that equality.
+In typical applied settings, $H > 0.5$ and $F < 0.5$, so the two terms in @eq-agg-approx have opposite signs and partially cancel. When rates are symmetric about 0.5 with equal variances (e.g., $\mu_H = 0.70$, $\mu_F = 0.30$, $\sigma_H = \sigma_F = 0.08$), cancellation is nearly exact and the discrepancy is negligible. In the worked example above ($\mu_H = 0.90$, $\mu_F = 0.15$), the $F$-term offsets only 26\% of the $H$-term. Cancellation of the second-order approximation requires $(\Phi^{-1})''(\mu_H)\,\sigma^2_H = -(\Phi^{-1})''(\mu_F)\,\sigma^2_F$, which depends on the specific parameter configuration. This condition need not cancel higher-order terms. Mirrored population distributions of $H$ and $1-F$ do cancel the full expected probit contributions, but independent finite samples need not reproduce that equality.
 
 # Covariate Effects in Probability Units
 
@@ -391,7 +379,7 @@ For a covariate $x_j$ with logistic coefficients $\beta_1^j$ (TPR model) and $\b
 
 $$\frac{\partial \text{PPB}}{\partial x_j} = \sigma'(\eta_1)\,\beta_1^j + \sigma'(\eta_0)\,\beta_0^j$$ {#eq-ppb-marginal}
 
-where $\sigma'(\eta) = \sigma(\eta)(1 - \sigma(\eta)) \in [0, 0.25]$. This is a weighted sum of the two coefficients in probability units. The weights are bounded and vary smoothly across ROC space.
+where $\sigma'(\eta) = \sigma(\eta)(1 - \sigma(\eta)) \in [0, 0.25]$. This is a weighted sum of the two coefficients in probability units. The weights are bounded and vary smoothly across the receiver operating characteristic (ROC) unit square.
 
 ## Marginal effects on $c$
 
@@ -415,7 +403,7 @@ Two groups with the same logistic bias coefficient $\beta_1 = \beta_0 = 0.2$:
 - $\partial \text{PPB}/\partial x = 2 \times 0.1875 \times 0.2 = 0.075$
 - $\partial c / \partial x = -0.5 \times 2 \times (0.1875/0.318) \times 0.2 = -0.118$
 
-The PPB effect is $0.075/0.019 \approx 4$x larger for Group B. The $c$ effect is $0.118/0.092 \approx 1.3$x larger. These ratios describe how the same logit-scale coefficient produces different effects in probability and probit units. A researcher interested in the yes probability should therefore report the probability-scale contrast; a criterion-scale contrast answers a different question.
+The PPB effect is $0.075/0.019 \approx 4$x larger for Group B. The $c$ effect is $0.118/0.092 \approx 1.3$x larger. These ratios describe how the same logit-scale coefficient produces different effects in probability and probit units.
 
 ## Discriminability versus bias shifts
 
@@ -427,7 +415,7 @@ Equal-and-opposite logit shifts ($\beta_1^j = -\beta_0^j = \delta$) give:
 
 $$\frac{\partial \text{PPB}}{\partial x_j} = [\sigma'(\eta_1) - \sigma'(\eta_0)]\,\delta \approx 0$$
 
-when $\sigma'(\eta_1) \approx \sigma'(\eta_0)$. Note that $J$ and PPB are exactly orthogonal in probability space --- the approximation here is entirely due to the logistic link function, which maps equal-and-opposite logit-scale shifts to unequal probability-scale shifts when $\sigma'(\eta_1) \neq \sigma'(\eta_0)$. This holds well at symmetric operating points (e.g., TPR $= 0.95$, FPR $= 0.05$: both $\sigma' = 0.0475$) but degrades at asymmetric ones (e.g., TPR $= 0.90$, FPR $= 0.30$: $\sigma' = 0.09$ vs. $0.21$), where equal-and-opposite logit shifts also change PPB on the probability scale.
+when $\sigma'(\eta_1) \approx \sigma'(\eta_0)$. $J$ and PPB are exactly orthogonal in probability space. The logistic link maps equal-and-opposite logit shifts to unequal probability shifts when $\sigma'(\eta_1) \neq \sigma'(\eta_0)$. At a symmetric operating point (TPR $= 0.95$, FPR $= 0.05$), both derivatives equal 0.0475 and the shifts leave PPB unchanged. At an asymmetric point (TPR $= 0.90$, FPR $= 0.30$), the derivatives are 0.09 and 0.21, so the shifts also change PPB.
 
 # Sampling Theory for PPB
 
@@ -437,7 +425,7 @@ With $\hat{H} = X_s / n_s$ and $\hat{F} = X_n / n_n$ for independent $X_s \sim \
 
 $$E[\widehat{\text{PPB}}] = E[\hat{H}] + E[\hat{F}] = H + F = \text{PPB}$$ {#eq-ppb-unbiased}
 
-exactly, at every $n_s$, $n_n$ and every operating point, boundaries included. No correction is applied and none is needed, so there is no correction bias to trade against sampling error. Simulated "bias" in PPB is Monte Carlo error: at $H = 0.80$, $F = 0.05$, $n_s = n_n = 10$ and 5,000 simulated subjects, the Monte Carlo standard error of the mean is $\sqrt{[H(1-H)/n_s + F(1-F)/n_n] / 5000} = 0.0020$. Panel A of the main text reports exact expectations, so no such error enters it.
+exactly, at every $n_s$, $n_n$ and every operating point, boundaries included. Simulated "bias" in PPB is Monte Carlo error: at $H = 0.80$, $F = 0.05$, $n_s = n_n = 10$ and 5,000 simulated subjects, the Monte Carlo standard error of the mean is $\sqrt{[H(1-H)/n_s + F(1-F)/n_n] / 5000} = 0.0020$. Panel A of the main text reports exact expectations, so no such error enters it.
 
 By independence of the signal and noise trial counts,
 
@@ -451,7 +439,7 @@ With fixed counts, orthogonality of the population contrasts does not imply samp
 
 ## Individual binomial intervals
 
-A plug-in normal-approximation interval is $\widehat{\text{PPB}} \pm z_{1-\alpha/2}\sqrt{\widehat{\operatorname{Var}}(\widehat{\text{PPB}})}$. At a boundary, a plug-in variance term is zero; this reflects the estimate, not certainty about the population probability. The interval can under-cover near boundaries and collapses when every estimated rate is extreme. I therefore use a conservative construction with a finite-sample coverage guarantee under the stipulated binomial sampling model.
+A plug-in normal-approximation interval is $\widehat{\text{PPB}} \pm z_{1-\alpha/2}\sqrt{\widehat{\operatorname{Var}}(\widehat{\text{PPB}})}$, without truncation to $[0, 2]$. At a boundary, a plug-in variance term is zero; this reflects the estimate, not certainty about the population probability. The interval can under-cover near boundaries and collapses when every estimated rate is extreme.
 
 Let $C(x,n;\gamma)=[L(x,n;\gamma),U(x,n;\gamma)]$ be a two-sided Clopper--Pearson interval with confidence level $1-\gamma$ [@clopper_use_1934]. Writing $Q_B(q;a,b)$ for a beta quantile,
 
@@ -461,7 +449,7 @@ Use $\gamma=\alpha/2$ for each of the signal and noise intervals. If $[L_s,U_s]$
 
 $$C_{\text{PPB}}=[L_s+L_n,\ U_s+U_n]$$ {#eq-ppb-interval}
 
-covers $H+F$ with probability at least $1-\alpha$: both component intervals cover simultaneously except on an event of probability at most $\alpha/2+\alpha/2$. This union-bound guarantee needs valid binomial marginals, but not independence between the two counts. Independence is used for the variance and exact coverage enumeration here. The interval lies in $[0,2]$, does not collapse at extreme observations, and leaves the raw point estimate unchanged. Dividing its endpoints by two gives an interval for the probability of responding "yes" under equal presentation. The construction is conservative; it supplies a simple reproducible baseline, rather than an optimal-width interval.
+covers $H+F$ with probability at least $1-\alpha$: both component intervals cover simultaneously except on an event of probability at most $\alpha/2+\alpha/2$. This union-bound guarantee needs valid binomial marginals, but not independence between the two counts. Independence is used for the variance and exact coverage enumeration here. The interval lies in $[0,2]$, does not collapse at extreme observations, and leaves the raw point estimate unchanged. Dividing its endpoints by two gives an interval for the probability of responding "yes" under equal presentation. The construction supplies a simple conservative baseline.
 
 For two independent samples, each modeled by signal and noise binomial counts, form four component intervals, each with $\gamma=\alpha/4$. A simultaneous interval for $\text{PPB}_1-\text{PPB}_2$ is
 
@@ -476,15 +464,15 @@ $$\begin{aligned}
 &\tilde s^{2}=\frac{\tilde H(1-\tilde H)}{n_s+2}+\frac{\tilde F(1-\tilde F)}{n_n+2}
 \end{aligned}$$ {#eq-ppb-adjusted-interval}
 
-Truncation to $[0,2]$ cannot lower coverage, because $H+F$ lies in that range. The interval is defined and has positive width at every observed count, but it is centered on the adjusted estimate, not on the raw $\widehat{\text{PPB}}$, and it has no coverage guarantee. At the trial counts of the grid below it contained the raw estimate for every outcome. Its coverage is therefore reported by exact enumeration, alongside the guaranteed interval. The coverage results below should inform the choice between these intervals, particularly when trial counts are unequal.
+Truncation to $[0,2]$ cannot lower coverage, because $H+F$ lies in that range. The interval is defined and has positive width at every observed count, but it is centered on the adjusted estimate, not on the raw $\widehat{\text{PPB}}$, and it has no coverage guarantee. At the trial counts of the grid below it contained the raw estimate for every outcome.
 
 ### Coverage and width
 
-The interval check enumerates all pairs of binomial outcomes. Its grid crosses $n_s,n_n \in \{4,10,20\}$ with $H,F \in \{.01,.05,.10,.20,.50,.80,.90,.95,.99\}$, giving 729 configurations. Minimum coverage for the conservative interval was 99.36\%. For the adjusted interval, coverage averaged 97.2\% with a minimum of 91.5\% (at $H=.95$, $F=.50$, $n_s=20$, $n_n=4$) and was below 94\% in 8.4\% of configurations; its mean expected width was 0.645, against 1.024 for the conservative interval and 0.456 for the normal-approximation interval. The normal-approximation interval averaged 75.4\% coverage with a minimum of 7.7\%, at $H=F=.01$ and four trials per class. Coverage printed as 100.00\% is rounded, not necessarily exactly one. @tbl-interval-coverage reports exact coverage and expected width for the featured operating points, a four-trial case, and an unequal-denominator case. Width is in PPB units. The normal-approximation comparator is untruncated. The wider simultaneous interval trades precision for its finite-sample guarantee; the adjusted interval trades the guarantee for width. Having a defined, unbiased point estimate does not imply a precise individual estimate.
+The interval check enumerates all pairs of binomial outcomes. Its grid crosses $n_s,n_n \in \{4,10,20\}$ with $H,F \in \{.01,.05,.10,.20,.50,.80,.90,.95,.99\}$, giving 729 configurations. Minimum coverage for the guaranteed interval was 99.36\%. For the adjusted interval, coverage averaged 97.2\% with a minimum of 91.5\% (at $H=.95$, $F=.50$, $n_s=20$, $n_n=4$) and was below 94\% in 8.4\% of configurations; its mean expected width was 0.645, against 1.024 for the guaranteed interval and 0.456 for the normal-approximation interval. The normal-approximation interval averaged 75.4\% coverage with a minimum of 7.7\%, at $H=F=.01$ and four trials per class. Coverage printed as 100.00\% is rounded, not necessarily exactly one. @tbl-interval-coverage reports exact coverage and expected width for the featured operating points, a four-trial case, and an unequal-denominator case. Width is in PPB units. The normal-approximation comparator is untruncated.
 
 {{< include tables/tbl_interval_coverage.md >}}
 
-: Exact coverage and expected width of nominal 95% PPB intervals under independent binomial counts. $n_s$ and $n_n$ count trials per class. The simultaneous interval sums Clopper--Pearson components at 97.5% confidence; its coverage is at least 95% by construction. The adjusted interval has no such guarantee. {#tbl-interval-coverage}
+: Exact coverage and expected width of nominal 95\% PPB intervals under independent binomial counts, with $n_s$ and $n_n$ trials per class. Normal intervals are untruncated plug-in intervals. CP sums 97.5\% Clopper--Pearson components, guaranteeing at least 95\% coverage. Adjusted intervals add one success and one failure per class and have no coverage guarantee. Widths are in PPB units. {#tbl-interval-coverage}
 
 ## Population and paired condition inference
 
@@ -492,13 +480,17 @@ When participants are sampled, $\overline{\text{PPB}}$ estimates the population 
 
 For a paired condition comparison, compute $D_i=\widehat{\text{PPB}}_{i,A}-\widehat{\text{PPB}}_{i,B}$ within each participant and use $\bar D\pm t_{K-1,1-\alpha/2}s_D/\sqrt K$. Dividing the contrast and endpoints by two gives the difference in the probability of responding "yes" under equal presentation. The within-participant differences account for correlation between condition measurements; the four-component interval above applies to independent samples. The empirical worked example uses this participant-level approximation and retains every participant.
 
-Exact aggregation identifies a population mean with the value at the same weighted mean rates. With unequal trial allocations, separate trial pools can use different participant weights and need not identify this mean. If each participant has only one trial type, population inference requires an allocation and sampling argument, such as randomized trial-type assignment to comparable participants; individual PPBs cannot be calculated from those observations. Mean individual $c$ is also a meaningful criterion estimand under a supported latent model, although it differs from $c$ at population-mean rates.
+Exact aggregation identifies a population mean with the value at the same weighted mean rates. With unequal trial allocations, separate trial pools can use different participant weights and need not identify this mean. If each participant has only one trial type, population inference requires an allocation and sampling argument, such as randomized trial-type assignment to comparable participants; individual PPBs cannot be calculated from those observations. Under EVSDT, mean individual $c$ estimates average centered criterion location.
 
-For predicted rates from covariate models, uncertainty in their sum must retain covariance between fitted rate estimates when they share participants or stimuli. Joint-model covariance or resampling at the appropriate sampling units can provide it. Merely adding two marginal standard errors does not.
+For predicted rates from covariate models, uncertainty in their sum must retain covariance between fitted rate estimates when they share participants or stimuli. Joint-model covariance or resampling at the appropriate sampling units can provide it.
 
-# Lineup response definition and sensitivity
+# Lineup response definitions and alternative coding
 
-The primary analysis treats choosing any lineup member as a positive response. Target-present foil choices count as positive responses under this definition, although they are incorrect identifications. Thus $J$ describes the separation in choosing rates between target-present and target-absent lineups, not identification accuracy. @tbl-lineup-responses gives every observed response category and its numerator assignment. For perpetrator-only coding, $H$ is the proportion of all target-present trials on which the perpetrator was correctly identified, while $F$ remains the choosing proportion in target-absent trials. Target-present foil choices count as negative responses and remain in the denominator. The resulting perpetrator-only rate sum combines different response definitions across trial types and cannot be interpreted as twice the choosing probability.
+The primary analysis treats choosing any lineup member as a positive response. Target-present foil choices count as positive responses under this definition, although they are incorrect identifications. Thus $J$ describes the separation in choosing rates between target-present and target-absent lineups, not identification accuracy. @tbl-lineup-responses gives every observed response category and its numerator assignment.
+
+Under alternative perpetrator-only coding, $H$ is the proportion of all target-present trials on which the perpetrator was correctly identified, while $F$ remains the choosing proportion in target-absent trials. Target-present foil choices count as negative responses and remain in the denominator. The resulting perpetrator-only rate sum combines different response definitions across trial types and cannot be interpreted as twice the choosing probability.
+
+The alternative perpetrator-only coding gave a pooled sum of 1.0045 instead of 1.1125, reflecting the exclusion of target-present foil choices from the $H$ numerator. Its own-minus-other sum difference was 0.0545 with a 95% paired interval of [$-0.0254$, $0.1345$]. The original study's suspect-identification ROC convention estimates innocent-suspect identifications by dividing target-absent foil identifications by lineup size [@colloff_active_2022]. Neither coding applies that adjustment.
 
 {{< include tables/tbl_lineup_responses.md >}}
 
@@ -506,29 +498,60 @@ The primary analysis treats choosing any lineup member as a positive response. T
 
 {{< include tables/tbl_lineup_sensitivity.md >}}
 
-: Primary choosing analysis and perpetrator-only sensitivity analysis. $c$ uses the log-linear correction. Boundary percentage refers to either raw rate at zero or one. The original study estimated the innocent-suspect identification rate by dividing the target-absent choosing rate by lineup size. Neither coding applies that adjustment. {#tbl-lineup-sensitivity}
+: Choosing and alternative perpetrator-only coding in Colloff et al. (2022), Experiment 1. Choosing counts any identification in either trial type; perpetrator-only coding counts only correct perpetrator identifications in $H$, leaving $F$ unchanged. $c$ uses the log-linear correction. Boundary percentage denotes either raw rate at 0 or 1. {#tbl-lineup-sensitivity}
 
 {{< include tables/tbl_lineup_paired.md >}}
 
-: Own-minus-other differences paired within participants. Intervals are t-based confidence intervals for mean within-participant differences, retaining every participant. Only the choosing coding supports interpreting the halved contrast as a difference in choosing probability. The perpetrator-only rows report differences in $H+F$ and $(H+F)/2$. {#tbl-lineup-paired}
+: Own-race minus other-race differences in Colloff et al. (2022), Experiment 1, with t-based confidence intervals for mean within-participant differences; all participants are retained. Under choosing coding and equal trial-type presentation, $(H+F)/2$ and its contrast are in choosing-probability units. Perpetrator-only rows report rate sums and their halved values. {#tbl-lineup-paired}
 
 # Group Comparisons
 
-The main text gives an analytic pair of groups with similar PPB and different accuracy. The two simulations here add the sampling behavior of that comparison and a comparison across latent distribution families. Both generate individual rates or evidence values from the stated population models and compute every index from the simulated values.
-
 ## Groups with similar PPB and different accuracy
 
-The simulation generated two groups of 100 subjects, with 5,000 replications. Individual rates were drawn from beta distributions with the group means below and standard deviations of 0.04 (Group A) and 0.10 (Group B), so the simulation includes between-subject variation but no binomial trial noise and no boundary correction. Group A has $H = 0.95$, $F = 0.08$, PPB $= 1.03$, and $J = 0.87$; Group B has $H = 0.65$, $F = 0.40$, PPB $= 1.05$, and $J = 0.25$. The population values of $c$, computed at the group mean rates, are $-0.12$ and $-0.07$, so PPB and $c$ rank the groups in opposite directions. In the simulation, each group's PPB and $c$ were the means of the individual values, and I recorded whether the two group differences had opposite signs.
+The simulation generated two groups of 100 subjects, with 5,000 replications. Individual rates were drawn from beta distributions with the group means below and standard deviations of 0.04 (Group A) and 0.10 (Group B), so the simulation includes between-subject variation but no binomial trial noise and no boundary correction. Rates were clamped to $[10^{-6}, 1 - 10^{-6}]$, as in the aggregation simulation. Group A has $H = 0.95$, $F = 0.08$, PPB $= 1.03$, and $J = 0.87$; Group B has $H = 0.65$, $F = 0.40$, PPB $= 1.05$, and $J = 0.25$. The population values of $c$, computed at the group mean rates, are $-0.12$ and $-0.07$, so PPB and $c$ rank the groups in opposite directions. In the simulation, each group's PPB and $c$ were the means of the individual values, and I recorded whether the two group differences had the same sign, which means that PPB and $c$ rank the groups in opposite directions.
 
-Observed rankings differed in 91.5\% of replications (@fig-conceptual, Panel A). The reversal follows from the population values; the simulation shows how often sampling variation leaves it visible at this configuration. The percentage depends on the group means, the between-subject spread, and the group size, and it approaches 100\% as group size increases at these population values.
+Observed rankings differed in 91.5\% of replications (@fig-conceptual, Panel A). The percentage depends on the group means, the between-subject spread, and the group size, and it approaches 100\% as group size increases at these population values.
 
 ## Groups matched on PPB with different latent distributions
 
-The second simulation set PPB to 1.20 in two groups and varied the shape of their latent evidence distributions. The reference group followed an equal-variance Gaussian distribution; the comparison group followed an unequal-variance Gaussian distribution with $\sigma \in \{1.5, 2.0\}$, a logistic distribution, or a heavy-tailed $t$ distribution with 3 or 5 degrees of freedom. Every distribution had a location shift of 1.5 between the signal and noise conditions. These are illustrative departures from equal-variance Gaussian evidence in variance and tail behavior. Holding the location shift fixed lets discriminability vary across families. For each index (PPB, $c$, $B''$, and $B_r$), I tested the group difference with a two-sided Welch $t$ test at $\alpha = 0.05$ (200 subjects per group, 2,000 replications).
+The second simulation set PPB to 1.20 in two groups and varied the shape of their latent evidence distributions. The reference group followed an equal-variance Gaussian distribution; the comparison group followed an unequal-variance Gaussian distribution with $\sigma \in \{1.5, 2.0\}$, a logistic distribution, or a heavy-tailed $t$ distribution with 3 or 5 degrees of freedom. Every distribution had a location shift of 1.5 between the signal and noise conditions. In the unequal-variance Gaussian families, $\sigma$ is the standard deviation of the signal distribution and the noise distribution has standard deviation 1. The logistic distribution has scale 1, and the $t$ distributions are unscaled: $t(3)$ has variance 3 and $t(5)$ has variance $5/3$. I found each criterion by bisection on $(-10, 10)$. These are illustrative departures from equal-variance Gaussian evidence in variance and tail behavior. Holding the location shift fixed lets discriminability vary across families. For each index (PPB, $c$, $B''$, and $B_r$), I tested the group difference with a two-sided Welch $t$ test (Satterthwaite degrees of freedom) at $\alpha = 0.05$ (200 subjects per group, 2,000 replications).
 
-At the common PPB, $J$ ranged from 0.306 for the unequal-variance Gaussian distribution with $\sigma = 2.0$ to 0.522 for the equal-variance Gaussian distribution, a spread of 0.22; the corresponding population values of $c$ ranged from $-0.28$ to $-0.33$. Tests based on PPB maintained the nominal 5\% rejection rate because the groups had equal population PPB. Depending on the comparison distribution, $c$ detected a difference in 10\% to 75\% of replications, $B_r$ in 19\% to 100\%, and $B''$ in 33\% to 100\% (@fig-conceptual, Panel B). Across distribution families, these rejection rates followed the magnitude of the difference in $J$. Matching PPB did not match both response rates: the groups differed in $J$ and in the other bias indexes, and the higher rejection rates for the other indexes reflect differences in their population values. Matching both $H$ and $F$, which every distribution family permits, yields agreement among all indexes.
+Each subject contributed 40 trials, 20 of each type. Subjects' hits and false alarms were binomial at the resulting population rates. PPB used the observed rates; $c$, $B''$ and $B_r$ used log-linearly corrected rates, so every index is defined for every subject. Algorithm `#ref(<alg-groups>, supplement: none)`{=typst} gives the procedure.
 
-![PPB and $c$ decompose the same rates along different axes. (A) Group differences in PPB ($x$-axis) and $c$ ($y$-axis) within each replication for groups with similar PPB but substantially different accuracy. Group A has $H = 0.95$, $F = 0.08$, PPB $= 1.03$, and $J = 0.87$; Group B has $H = 0.65$, $F = 0.40$, PPB $= 1.05$, and $J = 0.25$. The panel displays 500 of 5,000 replications with 100 subjects per group. Population $c$ equals $-0.12$ in Group A and $-0.07$ in Group B, so the two indexes rank the groups in opposite directions; their observed rankings differ in 91.5\% of replications at this configuration. Dashed lines indicate zero. (B) Rejection rates from two-sided Welch tests comparing groups matched at PPB $= 1.20$ but generated from latent distribution families with different shapes. Group A always follows the equal-variance Gaussian distribution. The comparison families are ordered by the difference between their value of $J$ and that of Group A, as annotated below each label. Tests based on PPB maintain the nominal 5\% rejection rate because the population values of PPB are equal. Rejection rates for the other indexes track the genuine difference in accuracy represented by $J$. Each condition includes 200 subjects per group and 2,000 replications, giving a maximum Monte Carlo error of 1.1 percentage points.](figures/fg_conceptual.pdf){#fig-conceptual}
+```{=typst}
+#figure(
+  kind: "algorithm",
+  supplement: [Algorithm],
+  placement: none,
+  caption: [Group comparison for one pair of latent distribution families. Hit and false alarm counts are binomial with 20 trials of each type.],
+  block(width: 100%, stroke: (top: 0.8pt, bottom: 0.8pt), inset: (y: 8pt, x: 4pt), align(left)[
+    #set text(size: 10pt)
+    #set par(leading: 0.6em, justify: false)
+    *Input:* signal and noise distributions $(S_A, N_A)$ for the reference group (equal-variance Gaussian) and $(S_B, N_B)$ for the comparison family, each with location shift 1.5; target $"PPB" = 1.20$; $K = 200$ subjects per group; $R = 2000$ replications; $alpha = 0.05$ \
+    #line(length: 100%, stroke: 0.4pt)
+    *for* $g in {A, B}$ *do* \
+    #h(1.5em) find the criterion $k_g$ such that $[1 - S_g (k_g)] + [1 - N_g (k_g)] = 1.20$ \
+    #h(1.5em) $H_g <- 1 - S_g (k_g)$, #h(0.5em) $F_g <- 1 - N_g (k_g)$ \
+    *end for* \
+    *for* $r = 1, dots, R$ *do* \
+    #h(1.5em) *for* $g in {A, B}$ *do* \
+    #h(3em) *for* $i = 1, dots, K$ *do* \
+    #h(4.5em) draw hits $tilde "Bin"(20, H_g)$ and false alarms $tilde "Bin"(20, F_g)$ \
+    #h(4.5em) compute PPB from the observed rates \
+    #h(4.5em) compute $c$, $B''$ and $B_r$ from the log-linearly corrected rates \
+    #h(3em) *end for* \
+    #h(1.5em) *end for* \
+    #h(1.5em) for each index, run a two-sided Welch $t$ test of group $A$ against group $B$; record whether $p < alpha$ \
+    *end for* \
+    #line(length: 100%, stroke: 0.4pt)
+    *Output:* for each index, the proportion of replications with $p < alpha$
+  ])
+) <alg-groups>
+```
+
+At the common PPB, $J$ ranged from 0.306 for the unequal-variance Gaussian distribution with $\sigma = 2.0$ to 0.522 for the equal-variance Gaussian distribution, a spread of 0.22; the corresponding population values of $c$ ranged from $-0.28$ to $-0.33$. Tests based on PPB maintained the nominal 5\% rejection rate because the groups had equal population PPB. Depending on the comparison distribution, $c$ detected a difference in 10\% to 75\% of replications, $B_r$ in 19\% to 100\%, and $B''$ in 33\% to 100\% (@fig-conceptual, Panel B). Across distribution families, these rejection rates followed the magnitude of the difference in $J$. Matching PPB did not match both response rates: the groups differed in $J$ and in the other bias indexes, and the higher rejection rates for the other indexes reflect differences in their population values.
+
+![Group rankings and rejection rates at similar or matched PPB. (A) Group differences in mean PPB ($x$-axis) and mean $c$ ($y$-axis), using beta-distributed individual rates without binomial trial noise or boundary corrections. Group A has $H = 0.95$, $F = 0.08$, PPB $= 1.03$, and $J = 0.87$; Group B has $H = 0.65$, $F = 0.40$, PPB $= 1.05$, and $J = 0.25$. The panel displays 500 of 5,000 replications with 100 subjects per group. Values of $c$ at group mean rates are $-0.12$ for A and $-0.07$ for B. PPB and $c$ rank the groups oppositely in 91.5\% of replications. Dashed lines denote zero. (B) Rejection rates from two-sided Welch tests at $\alpha=.05$ for groups matched at PPB $=1.20$ across latent distribution families. Group A is equal-variance Gaussian; comparison families are ordered by $|\Delta J|$. The groups differ in $J$ and the other indexes’ population values. Each condition uses 200 subjects per group, 20 trials of each type and 2,000 replications. PPB uses raw rates; $c$, $B''$ and $B_r$ use log-linear corrections. The maximum Monte Carlo standard error is 1.1 percentage points.](figures/fg_conceptual.pdf){#fig-conceptual}
 
 # One Decision of Each Type
 
@@ -542,7 +565,7 @@ At the common PPB, $J$ ranged from 0.306 for the unequal-variance Gaussian distr
 
 {{< include tables/tbl_cw_contrast.md >}}
 
-: Showup minus simultaneous showup. Intervals are Welch 95% intervals for the difference in participant-level means of $H_i + F_i$, $J_i = H_i - F_i$, and log-linear $c_i$, so the two decisions of a participant are not treated as independent trials. $p$ values are two-sided Welch tests. Experiment 3 excludes the standard-lineup condition. {#tbl-cw-contrast}
+: Colloff and Wixted (2020): showup minus simultaneous showup differences in participant-level means of $H_i+F_i$, $J_i=H_i-F_i$, and log-linear $c_i$, with Welch 95\% intervals and two-sided Welch $p$ values. Each participant’s two decisions are kept together. Experiment 3 excludes the standard lineup. {#tbl-cw-contrast}
 
 *Correction behavior.* With $n_s = n_n = 1$ the log-linear correction maps each rate to $(x + 1/2)/2 \in \{1/4, 3/4\}$, so $z(\tilde H_i) = (2h_i - 1)\,z_{.75}$ with $z_{.75} = \Phi^{-1}(.75)$, and likewise for $F$. Therefore
 
@@ -550,7 +573,78 @@ $$c_i = -\tfrac{1}{2}\left[z(\tilde H_i) + z(\tilde F_i)\right] = z_{.75}\left(1
 
 so log-linear $c$ is an affine decreasing function of PPB, and a test of one is a test of the other, as the identical $p$ values in @tbl-cw-contrast show. The $1/2N$ correction moves every boundary rate to $1/2$ and gives $c_i = 0$ for every participant, so it cannot detect any difference. Excluding participants with a boundary rate leaves no data. Only the log-linear correction yields a usable $c$ here, and its result is PPB rescaled by $z_{.75} = 0.674$.
 
-*Interpretation.* This is an illustration of boundary stability, not evidence that PPB outperforms $c$. $J$ here separates choosing rates in a binary response. Colloff and Wixted's discriminability conclusions rest on confidence-based ROC analysis, which these data summaries do not address. Both showup conditions asked the same suspect-identification question. They differed in the faces shown and accompanying instructions, so the contrast compares procedures without isolating a particular mechanism. Experiment 3 also omitted the pre-identification confidence question and initial viewing delay, revised the task instructions, and randomly selected innocent suspects and fillers for each participant. The reanalysis does not estimate the separate effects of these changes.
+The present analysis uses binary responses; Colloff and Wixted’s discriminability analysis used confidence-based ROC curves. Both showup conditions asked the same suspect-identification question and differed in the faces shown and accompanying instructions. Experiment 3 also omitted the pre-identification confidence question and initial viewing delay, revised the task instructions, and randomly selected innocent suspects and fillers for each participant. The contrasts compare procedures without isolating the effects of individual changes.
+
+# Analysis Specifications
+
+Random number generators were seeded, and the replication archive reproduces every reported value. Scenarios within a simulation share one random stream, so reproducing a single reported scenario requires running the full sequence in the archive. In every simulation that generates trials, a subject with true rates $H$ and $F$ and $n$ total trials contributes $n_s = \lfloor n/2 \rfloor$ signal trials and $n_n = n - n_s$ noise trials, with hits distributed $\text{Bin}(n_s, H)$ and false alarms $\text{Bin}(n_n, F)$ independently. The log-linear correction replaces the observed rates with $(\text{hits} + 1/2)/(n_s + 1)$ and $(\text{FA} + 1/2)/(n_n + 1)$. The $1/2N$ correction replaces a rate of 0 with $1/(2m)$ and a rate of 1 with $1 - 1/(2m)$, where $m$ is the number of trials of that type, and leaves other rates unchanged.
+
+## Boundary stability
+
+For each configuration $(H, F, n)$ in $\{(0.80, 0.05, 20), (0.95, 0.20, 20), (0.95, 0.05, 20), (0.95, 0.10, 40)\}$, I enumerated every outcome $(h, f)$ with $0 \le h \le n_s$ and $0 \le f \le n_n$, weighted it by its binomial probability, and computed the expected value of each estimator. Bias is the expected value minus the population value, where $\text{PPB} = H + F$ and $c = -\tfrac{1}{2}[\Phi^{-1}(H) + \Phi^{-1}(F)]$. The proportion of subjects with a boundary estimate is $1 - P(0 < h < n_s)\,P(0 < f < n_n)$.
+
+## Aggregation
+
+Each replication drew 100 subjects with individual rates $H_i \sim \text{Beta}(\alpha_H, \beta_H)$ and $F_i \sim \text{Beta}(\alpha_F, \beta_F)$, drawn independently. The parameters follow from the population mean $\mu$ and standard deviation $\sigma$ of each rate by $\alpha = \mu\,[\mu(1-\mu)/\sigma^2 - 1]$ and $\beta = (1-\mu)\,[\mu(1-\mu)/\sigma^2 - 1]$. The three settings were
+
+| Setting | $\mu_H$ | $\sigma_H$ | $\mu_F$ | $\sigma_F$ |
+|---|---|---|---|---|
+| Typical applied | 0.90 | 0.08 | 0.15 | 0.06 |
+| Symmetric | 0.70 | 0.08 | 0.30 | 0.08 |
+| Extreme | 0.95 | 0.04 | 0.05 | 0.03 |
+
+: Means and standard deviations of the beta distributions used in the aggregation simulation. The main text reports the typical applied setting. {#tbl-agg-settings}
+
+The individual rates are the observers' true rates, so no trials were simulated and no boundary estimates occur. Rates were clamped to $[10^{-6}, 1 - 10^{-6}]$ so that the probit is defined; this affects only the extreme tails of the beta distributions. For each index (PPB, $c$, $B''$, $B''_D$ and $B_r$), the discrepancy in a replication is the mean of the 100 individual values minus the value at the mean rates $\bar H$ and $\bar F$. The mean rates are means of the clamped values. $B''$ is set to 0 when $H = F$, and $B''_D$ to 0 when its denominator is 0. I report the average discrepancy over 2,000 replications.
+
+## Regression
+
+Each of two groups contained 2,000 subjects with 40 trials each ($n_s = n_n = 20$). A covariate $x_i \sim \mathcal{N}(0, 1)$ was drawn independently for each subject. The true rates were $H_i = \sigma(\eta_1 + \beta x_i)$ and $F_i = \sigma(\eta_0 + \beta x_i)$, where $\sigma$ is the logistic function and $\beta = 0.3$ in both groups. The groups differed only in their baselines:
+
+| Group | $\eta_1$ | $\eta_0$ | $H$ at $x = 0$ | $F$ at $x = 0$ |
+|---|---|---|---|---|
+| High accuracy | 2.5 | $-2.5$ | 0.924 | 0.076 |
+| Moderate accuracy | 1.0 | $-1.0$ | 0.731 | 0.269 |
+
+: Baselines of the regression simulation. {#tbl-reg-settings}
+
+```{=typst}
+#figure(
+  kind: "algorithm",
+  supplement: [Algorithm],
+  placement: none,
+  caption: [Regression simulation for one group. Hit and false alarm counts are binomial with $n_s = n_n = 20$; $sigma$ is the logistic function.],
+  block(width: 100%, stroke: (top: 0.8pt, bottom: 0.8pt), inset: (y: 8pt, x: 4pt), align(left)[
+    #set text(size: 10pt)
+    #set par(leading: 0.6em, justify: false)
+    *Input:* baselines $eta_1, eta_0$; slope $beta = 0.3$; $N = 2000$ subjects \
+    #line(length: 100%, stroke: 0.4pt)
+    *for* $i = 1, dots, N$ *do* \
+    #h(1.5em) draw $x_i tilde cal(N)(0, 1)$ \
+    #h(1.5em) $H_i <- sigma(eta_1 + beta x_i)$, #h(0.5em) $F_i <- sigma(eta_0 + beta x_i)$ \
+    #h(1.5em) draw hits $tilde "Bin"(20, H_i)$ and false alarms $tilde "Bin"(20, F_i)$ \
+    #h(1.5em) $"PPB"_i <- "hits"/20 + "FA"/20$ \
+    #h(1.5em) $tilde(H)_i <- ("hits" + 1/2)/21$, #h(0.5em) $tilde(F)_i <- ("FA" + 1/2)/21$ \
+    #h(1.5em) $c_i <- -1/2 [Phi^(-1)(tilde(H)_i) + Phi^(-1)(tilde(F)_i)]$ \
+    #h(1.5em) mark subject $i$ as needing a correction if hits or $"FA" in {0, 20}$ \
+    *end for* \
+    #line(length: 100%, stroke: 0.4pt)
+    *Output:* the least squares slope of $"PPB"_i$ on $x_i$; the least squares slope of $c_i$ on $x_i$; the number of subjects needing a correction
+  ])
+) <alg-regression>
+```
+
+Algorithm `#ref(<alg-regression>, supplement: none)`{=typst} gives the procedure. Adding the same quantity to both logits shifts bias on the logit scale and leaves discriminability on that scale unchanged. PPB used observed rates and $c$ used log-linearly corrected rates; all subjects were retained. The simulation is a single data set per group. The reported slope is the ordinary least squares slope of the index on $x$ within each group. A subject needed a correction if either observed rate was 0 or 1; this applied to 794 of the 2,000 high-accuracy subjects. The marginal-effect expressions above give PPB derivatives of 0.042 and 0.118 at $x=0$ in the two groups, against simulated regression slopes of 0.040 and 0.119.
+
+I repeated the simulation with 200 other random seeds (1–200). The PPB slopes averaged 0.043 and 0.117 (standard deviations 0.002 and 0.003), and the slopes of $c$ averaged $-0.124$ and $-0.176$ (standard deviations 0.005 and 0.005). The ratio of the moderate-accuracy slope to the high-accuracy slope averaged 2.7 for PPB (standard deviation 0.14) and 1.4 for $c$ (0.07), against 3.0 and 1.6 in the reported data set. The slopes of $c$ use log-linearly corrected rates. The marginal-effect expression for uncorrected $c$ gives derivatives of $-0.147$ and $-0.179$ at $x=0$ in the two groups, a ratio of 1.2.
+
+## Corrections, exclusion and aggregation
+
+Take $(H, F, n) = (0.95, 0.20, 20)$ with every subject sharing the same true rates. The expected mean of log-linear-corrected $c$ over any number of subjects equals the expected value for one subject, so the enumeration above gives its bias, $+0.100$, at every group size. Excluding subjects with a boundary estimate conditions on the interior outcomes $0 < h < n_s$ and $0 < f < n_n$, and the bias of uncorrected $c$ is then $E[c \mid \text{interior}] - c$, which is 0.22 in magnitude.
+
+## Group comparisons
+
+For the group simulations in §7, the beta parameters follow from the stated means and standard deviations using the aggregation formula above.
 
 # References {.unnumbered}
 

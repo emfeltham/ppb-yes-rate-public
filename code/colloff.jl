@@ -52,7 +52,7 @@ end
 `:choose` (primary): choosing any lineup member is positive, whether the selected
 member is the perpetrator or a foil; rejection is negative in both TP and TA.
 Thus J measures TP–TA separation in choosing rates, not culprit identification
-accuracy. `:identification` (legacy sensitivity): TP perpetrator identifications
+accuracy. `:identification` (alternative coding): TP perpetrator identifications
 are hits and TA foil identifications are false alarms; TP foil choices are
 negative. Its H+F is a descriptive sum of differently defined response rates,
 not the primary binary choosing measure.

@@ -50,6 +50,10 @@ code, when a checked passage has been reworded (update the check's passage to ma
 `tables/*.md` differs from what `tables.jl` now produces. `--all` lists every check.
 When you add a number to the text, add a `cite(...)` for it.
 
+The verifier also runs `regression_repetition_summary()` in `simulation.jl` with seeds 1–200
+and checks the supplementary means and standard deviations of slopes and slope ratios,
+plus the main-text summary. The figure retains its original seed-789 data set.
+
 Shared code paths, so figures, tables and text cannot drift apart:
 
 - `simulation.jl` `boundary_panel()` — Figure 2A and its text. Exact expectations by
@@ -70,7 +74,7 @@ Snodgrass and Corwin tests and generates paired/Welch strength-contrast interval
 `data/layher2020/` and `data/measuring_memory/`. Raw J is a primary discrimination index.
 
 `load_colloff()` defaults to any identification versus rejection in both trial types;
-`load_colloff(response=:identification)` retains the perpetrator-only sensitivity coding.
+`load_colloff(response=:identification)` uses the alternative perpetrator-only response coding.
 The latter sum is not twice a common yes rate. Paired own-race contrasts match participants
 by identifier and retain within-participant covariance. Sparse individual intervals use
 simultaneous Clopper–Pearson intervals; participant-population intervals use t methods.

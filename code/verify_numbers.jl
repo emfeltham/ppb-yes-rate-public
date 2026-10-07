@@ -189,7 +189,7 @@ function check_panel_a()
     ll = [abs(r.c_ll_bias) for r in P]
     hn = [abs(r.c_hn_bias) for r in P]
     cite("Panel A boundary %, range", :paper,
-         "Across configurations in which #% to #% of subjects produced a boundary estimate",
+         "In the four configurations, #% to #% of subjects produced a boundary estimate",
          minimum(pct), maximum(pct))
     claim("Panel A: PPB exactly unbiased", :paper, "PPB remained unbiased",
           all(abs(r.ppb_bias) < 1e-12 for r in P))
@@ -198,10 +198,10 @@ function check_panel_a()
           "nearly unbiased only in the configuration with F = 1 - H (H = 0.95, F = 0.05)",
           ll[sym] < 1e-6 && hn[sym] < 1e-6 && all(ll[i] > 0.02 for i in eachindex(P) if i != sym))
     cite("Panel A max |bias|, log-linear and 1/2N", :paper,
-         "the log-linear correction yielded bias of as much as #, and the 1/2N correction produced greater bias, reaching #",
+         "the log-linear correction biased c by as much as #, and the 1/2N correction by as much as #",
          maximum(ll), maximum(hn))
     cite("Abstract: boundary-correction bias", :paper, "boundary corrections biased c by up to #", maximum(hn))
-    claim("Panel A: 1/2N worse wherever c != 0", :paper, "the 1/2N correction produced greater bias",
+    invariant("Panel A: 1/2N worse wherever c != 0",
           all(hn[i] > ll[i] for i in eachindex(P) if i != sym))
     rel = [100 * b / abs(r.c_true) for r in P if abs(r.c_true) > 1e-9 for b in (abs(r.c_ll_bias), abs(r.c_hn_bias))]
     cite("Panel A attenuation of c, range", :paper,
@@ -220,7 +220,7 @@ function check_panel_a()
          "At # to # trials of each type, boundary corrections introduced bias of up to #",
          minimum(n ÷ 2 for (_, _, n) in cfgs), maximum(n ÷ 2 for (_, _, n) in cfgs), maximum(hn))
     cite("Discussion: excluding boundary observers", :paper,
-         "excluding them biased c by # in the follow-up simulation", abs(f.c_excl_bias))
+         "excluding them biased c by # in the follow-up calculation", abs(f.c_excl_bias))
 end
 
 function check_aggregation()
@@ -247,11 +247,11 @@ function check_aggregation()
           40 < 100 * abs(t.c_discrepancy_mean) / abs(c_pop) < 50,
           string(round(100 * abs(t.c_discrepancy_mean) / abs(c_pop); digits = 1)) * "%")
     cite("Aggregation: relative to B_r and c", :paper,
-         "the discrepancy represented #% of B_r and #% of c",
+         "the discrepancy was #% for B_r and #% for c",
          100 * abs(t.br_discrepancy_mean) / br_pop, 100 * abs(t.c_discrepancy_mean) / abs(c_pop))
     se = maximum(max(r.c_discrepancy_sd, r.bpp_discrepancy_sd, r.bppd_discrepancy_sd, r.br_discrepancy_sd)
                  for r in agg) / sqrt(2000)
-    cite("Fig 2B caption: MC error bound", :paper, "Monte Carlo error less than #)", 0.001)
+    cite("Fig 2B caption: MC error bound", :paper, "Monte Carlo standard error below #)", 0.001)
     invariant("Fig 2B: MC error actually below 0.001", se < 0.001, string(round(se; digits = 5)))
     cite("Fig 2B caption: design", :paper, "under three scenarios (# subjects, # replications", 100, 2000)
     cite("Methods: aggregation design", :paper,
@@ -284,16 +284,46 @@ function check_regression()
          hi.slope_ppb, mod.slope_ppb)
     claim("Regression: threefold", :paper, "a threefold difference", round(ratio) == 3 && abs(ratio - 3) < 0.05,
           string(round(ratio; digits = 3)))
-    cite("Regression: c ratio", :paper, "slopes for c differed by a factor of #",
+    cite("Regression: c ratio", :paper, "slopes for c, computed from log-linearly corrected rates, differed by a factor of #",
          abs(mod.slope_c_loglin) / abs(hi.slope_c_loglin))
     cite("Regression: undefined c", :paper, "In addition, # of the # high-accuracy subjects", hi.n_nan, hi.n_subjects)
     cite("Methods: regression design", :paper, "coefficient (\\beta = #)", hi.β_bias)
-    cite("Methods: regression n", :paper, "(# subjects per group, # trials per subject)", hi.n_subjects, hi.n_trials)
+    cite("Methods: regression n", :paper, "(# subjects per group, # trials per subject, one simulated data set per group", hi.n_subjects, hi.n_trials)
     cite("Fig 2C caption: design", :paper, "\\beta = # on the logit scale, shown separately", hi.β_bias)
+
+    # Supplement §9: baseline derivatives and independent repetitions.
+    cite("Regression: baseline PPB derivatives", :supp,
+         "give PPB derivatives of # and # at x=0 in the two groups, against simulated regression slopes of # and #",
+         hi.predicted_ppb_slope, mod.predicted_ppb_slope, hi.slope_ppb, mod.slope_ppb)
+    cite("Regression: baseline c derivatives", :supp,
+         "gives derivatives of # and # at x=0 in the two groups, a ratio of #",
+         hi.predicted_c_slope, mod.predicted_c_slope, abs(mod.predicted_c_slope / hi.predicted_c_slope))
+    repetitions = Sim.regression_repetition_summary()
+    rh, rm = repetitions.groups
+    cite("Regression repetitions: count and seeds", :supp,
+         "repeated the simulation with # other random seeds (#–#)",
+         repetitions.n_replications, first(repetitions.seeds), last(repetitions.seeds))
+    cite("Regression repetitions: PPB means and SDs", :supp,
+         "The PPB slopes averaged # and # (standard deviations # and #)",
+         rh.ppb_mean, rm.ppb_mean, rh.ppb_sd, rm.ppb_sd)
+    cite("Regression repetitions: c means and SDs", :supp,
+         "the slopes of c averaged # and # (standard deviations # and #)",
+         rh.c_mean, rm.c_mean, rh.c_sd, rm.c_sd)
+    cite("Regression repetitions: ratio means and SDs", :supp,
+         "averaged # for PPB (standard deviation #) and # for c (#)",
+         repetitions.ppb_ratio.mean, repetitions.ppb_ratio.sd,
+         repetitions.c_ratio.mean, repetitions.c_ratio.sd)
+    cite("Regression repetitions: original-run ratios", :supp,
+         "against # and # in the reported data set", ratio, abs(mod.slope_c_loglin / hi.slope_c_loglin))
+    cite("Regression repetitions: main-text summary", :paper,
+         "across # independent repetitions they averaged # for PPB and # for c",
+         repetitions.n_replications, repetitions.ppb_ratio.mean, repetitions.c_ratio.mean)
 end
 
 function check_group_comparison()
     s = Sim.sim_group_comparison()[3]
+    cite("Group comparisons: main-text sample sizes", :paper,
+         "simulates this comparison with # subjects per group. A second simulation uses # subjects per group matched on PPB", 100, 200)
     HA, FA, HB, FB = 0.95, 0.08, 0.65, 0.40     # the scenario's population rates (simulation.jl)
     invariant("Group comparison: rates match simulation.jl",
               isapprox(s.ppb_A_true, HA + FA) && isapprox(s.ppb_B_true, HB + FB))
@@ -333,8 +363,8 @@ function check_group_comparison()
     cite("Fig S caption: groups", :supp,
          "Group A has H = #, F = #, PPB = #, and J = #; Group B has H = #, F = #, PPB = #, and J = #",
          HA, FA, HA + FA, HA - FA, HB, FB, HB + FB, HB - FB, nth = 2)
-    cite("Fig S caption: population c", :supp, "Population c equals # in Group A and # in Group B", s.c_A_true, s.c_B_true)
-    cite("Fig S caption: disagreement", :supp, "their observed rankings differ in #% of replications at this configuration", 100 * s.disagree_rate)
+    cite("Fig S caption: population c", :supp, "Values of c at group mean rates are # for A and # for B", s.c_A_true, s.c_B_true)
+    cite("Fig S caption: disagreement", :supp, "PPB and c rank the groups oppositely in #% of replications", 100 * s.disagree_rate)
     cite("Fig S caption: design", :supp, "replications with # subjects per group", s.K)
     # figures.jl plots every step-th replication, step = length ÷ n_show
     n_show = let src = read(joinpath(ROOT, "code", "figures.jl"), String)
@@ -377,7 +407,7 @@ function check_distribution_shape()
         claim("Sim 6: $nm rejection follows |dJ|", :supp, "these rejection rates followed the magnitude of the difference in J",
               all(diff(v[ord]) .>= -0.05), string(round.(v[ord]; digits = 1)))
     end
-    cite("Fig S caption: MC error", :supp, "maximum Monte Carlo error of # percentage points", 100 * sqrt(0.25 / 2000))
+    cite("Fig S caption: MC error", :supp, "maximum Monte Carlo standard error is # percentage points", 100 * sqrt(0.25 / 2000))
     cite("Methods: Sim 6 design", :supp, "at \\alpha = 0.05 (# subjects per group, # replications)", 200, 2000)
     cite("Methods: Sim 6 location shift", :supp, "Every distribution had a location shift of # between", res6.d_prime)
 
@@ -387,6 +417,8 @@ function check_distribution_shape()
                                   "Heavy-tailed (t, df=3)", "Heavy-tailed (t, df=5)"]), join(labels, "; "))
     cite("Methods: Sim 6 sigma values", :supp, "\\sigma \\in \\{#, #\\}", 1.5, 2.0)
     cite("Methods: Sim 6 t degrees of freedom", :supp, "distribution with # or # degrees of freedom", 3, 5)
+    cite("Methods: Sim 6 t variances", :supp,
+         "t(#) has variance # and t(#) has variance #/#", 3, var(TDist(3)), 5, 3 * var(TDist(5)), 3)
 end
 
 function check_empirical()
@@ -402,9 +434,9 @@ function check_empirical()
          "#% of participants had a rate of 0 or 1 (Colloff", 100 * nb / n)
     cite("Discussion: undefined c", :paper, "In the eyewitness data, c was undefined for #% of participants", 100 * nb / n)
     cite("Results: boundary participants", :paper, "At the subject level, # of # participants (#%)", nb, n, 100 * nb / n)
-    cite("Results: condition level", :paper, "At the condition level, #% of observations required correction", 100 * nbc / nc)
+    cite("Results: condition level", :paper, "At the condition level, with each participant in each condition counted as one observation, #% of observations required correction", 100 * nbc / nc)
     cite("Results: condition level, own-race paragraph", :paper, "depends on corrections for #% of the condition-level", 100 * nbc / nc)
-    cite("Table 1 caption: condition level", :paper, "because #% of its observations lie on a boundary", 100 * nbc / nc)
+    cite("Table 1 caption: condition level", :paper, "because #% of observations have a boundary rate", 100 * nbc / nc)
     cite("Results: corrections disagree, boundary", :paper,
          "Among the # affected participants, estimates of c under the log-linear and 1/2N corrections differed by as much as #.", nb, dis_b)
     cite("Results: corrections disagree, interior", :paper, "differed by as much as # among interior rates", dis_i)
@@ -426,7 +458,7 @@ function check_empirical()
     c_means = criterion_c(mean(subj.H_ll), mean(subj.F_ll))
     c_ind = mean(subj.c_ll)
     cite("Results: empirical aggregation", :paper,
-         "The value of c computed from mean corrected rates was #, whereas the mean of individual c values was #. The resulting discrepancy was #.",
+         "the value of c computed from mean corrected rates was #, whereas the mean of individual c values was #. The resulting discrepancy was #.",
          c_means, c_ind, c_ind - c_means)
     invariant("Empirical PPB aggregates exactly", abs(mean(subj.ppb_val) - ppb(mean(subj.H), mean(subj.F))) < 1e-15)
 
@@ -447,8 +479,8 @@ function check_empirical()
          count_response(true, "reject"), sum(.!raw.is_tp), count_response(false, "foil"), count_response(false, "reject"))
     H, F = sum(raw.is_hit) / sum(raw.is_tp), sum(raw.is_fa) / sum(.!raw.is_tp)
     cite("Worked example: choosing rates and indexes", :paper,
-         "Under the stated choosing response, H=#, F=#, J=#, and PPB =#.", H, F, H - F, H + F)
-    cite("Worked example: choosing fraction", :paper, "PPB/2 =# is the choosing fraction", (H + F) / 2)
+         "H = #/# = # and F = #/# = #, so J = # and PPB = #.", sum(raw.is_hit), sum(raw.is_tp), H, sum(raw.is_fa), sum(.!raw.is_tp), F, H - F, H + F)
+    cite("Worked example: choosing fraction", :paper, "PPB/2 = # is the overall fraction of trials on which a witness chose", (H + F) / 2)
     invariant("Choosing PPB/2 equals observed choosing fraction", isapprox((H + F) / 2, mean(raw.is_positive)))
     p = paired_ownrace_summary(cond)
     cite("Worked example: paired PPB contrast", :paper,
@@ -461,12 +493,12 @@ function check_empirical()
 
     legacy_subj, legacy_cond = load_colloff(; response=:identification)
     legacy_p = paired_ownrace_summary(legacy_cond)
-    cite("Sensitivity: pooled sum", :paper,
-         "The perpetrator-only sensitivity coding gave a pooled sum of # instead of #", mean(legacy_subj.ppb_val), H + F)
-    cite("Sensitivity: paired contrast", :paper,
+    cite("Alternative coding: pooled sum", :supp,
+         "The alternative perpetrator-only coding gave a pooled sum of # instead of #", mean(legacy_subj.ppb_val), H + F)
+    cite("Alternative coding: paired contrast", :supp,
          "Its own-minus-other sum difference was # with a 95% paired interval of [#, #]",
          legacy_p.mean, legacy_p.lo, legacy_p.hi)
-    invariant("Sensitivity changes only TP foil numerator", isapprox(
+    invariant("Alternative coding changes only TP foil numerator", isapprox(
               mean(subj.ppb_val) - mean(legacy_subj.ppb_val), count_response(true, "foil") / sum(raw.is_tp)))
 end
 
@@ -492,28 +524,28 @@ function check_intervals()
     invariant("Finite-binomial interval boundary and coverage checks", Inference.check_inference(grid))
     panel_a = [Inference.interval_coverage(H, F, n ÷ 2, n ÷ 2) for (H, F, n) in Sim.PANEL_A_CONFIGS]
     cite("Intervals: featured normal-approximation coverage range", :paper,
-         "nominal 95% normal-approximation coverage ranged from #% to #%",
+         "nominal 95% coverage ranged from #% to #%",
          100minimum(r.wald_coverage for r in panel_a), 100maximum(r.wald_coverage for r in panel_a))
     r = only(filter(r -> r.H == 0.8 && r.F == 0.05 && r.ns == r.nn == 10, featured))
     cite("Intervals: expected widths", :paper,
-         "expected widths were # for the simultaneous interval and # for the normal-approximation interval", r.cp_width, r.wald_width)
+         "its expected width was #, against # for the normal-approximation interval", r.cp_width, r.wald_width)
     minimum_coverage = minimum(r.cp_coverage for r in grid)
     cite("Intervals: minimum coverage, main", :paper,
-         "the minimum simultaneous coverage was #%", 100minimum_coverage)
+         "Across the grid its minimum coverage was #%", 100minimum_coverage)
     G = Inference.grid_summary(grid)
     cite("Intervals: adjusted width at the featured point", :paper,
-         "The adjusted interval had expected width # at that operating point", r.adj_width)
+         "the adjusted interval had expected width #, without a coverage guarantee", r.adj_width)
     cite("Intervals: adjusted coverage across the grid, main", :paper,
-         "its coverage averaged #% with a minimum of #% and fell below 94% in #% of configurations, and its mean expected width was #, against # for the simultaneous interval",
+         "its coverage averaged #% with a minimum of #% and fell below 94% in #% of configurations, and its mean expected width was #, against # for the guaranteed interval",
          100G.adj.mean, 100G.adj.minimum, 100G.adj.below, G.adj.width, G.cp.width)
     cite("Intervals: normal-approximation coverage across the grid, main", :paper,
-         "The normal-approximation interval averaged #% coverage, with a minimum of #%", 100G.wald.mean, 100G.wald.minimum)
+         "Across the grid it averaged #% coverage, with a minimum of #%", 100G.wald.mean, 100G.wald.minimum)
     cite("Intervals: adjusted coverage, limitation", :paper,
          "its coverage fell as low as #% on the grid", 100G.adj.minimum)
     amin = grid[argmin([x.adj_coverage for x in grid])]
     wmin = grid[argmin([x.wald_coverage for x in grid])]
     cite("Intervals: adjusted coverage across the grid, supplement", :supp,
-         "coverage averaged #% with a minimum of #% (at H=#, F=#, n_s=#, n_n=#) and was below 94% in #% of configurations; its mean expected width was #, against # for the conservative interval and # for the normal-approximation interval",
+         "coverage averaged #% with a minimum of #% (at H=#, F=#, n_s=#, n_n=#) and was below 94% in #% of configurations; its mean expected width was #, against # for the guaranteed interval and # for the normal-approximation interval",
          100G.adj.mean, 100G.adj.minimum, amin.H, amin.F, amin.ns, amin.nn, 100G.adj.below, G.adj.width, G.cp.width, G.wald.width)
     cite("Intervals: normal-approximation coverage across the grid, supplement", :supp,
          "The normal-approximation interval averaged #% coverage with a minimum of #%, at H=F=# and four trials per class",
@@ -523,7 +555,7 @@ function check_intervals()
     cite("Intervals: probability grid", :supp, "H,F \\in \\{#,#,#,#,#,#,#,#,#\\}", sort(unique(r.H for r in grid))...)
     cite("Intervals: grid size", :supp, "giving # configurations", length(grid))
     cite("Intervals: minimum coverage, supplement", :supp,
-         "Minimum coverage for the conservative interval was #%", 100minimum_coverage)
+         "Minimum coverage for the guaranteed interval was #%", 100minimum_coverage)
     rows = table_rows(:supp, "tbl-interval-coverage")
     invariant("Interval table has every featured configuration", length(rows) == length(featured))
     for (i, (row, r)) in enumerate(zip(rows, featured))
@@ -547,7 +579,7 @@ function check_properties()
     rect(q, v) = (q + (1 - q) * v, (1 - q) * v)
     H1, F1 = rect(0.3, 0.4)
     H2, F2 = rect(0.6, 0.4)
-    cite("Properties: 2HT example", :paper, "guess rate of B_r = # raises PPB from # to # as J increases from # to #",
+    cite("Properties: uniform-model guess-rate example", :paper, "with B_r = #, PPB rises from # to # as J increases from # to #",
          0.4, H1 + F1, H2 + F2, H1 - F1, H2 - F2)
     # Fig 1 caption grids, read from the plotting script that draws them
     warp = read(joinpath(ROOT, "code", "figure_warp.jl"), String)
@@ -650,24 +682,24 @@ function check_invariance()
     r1, rm = L1.res, MM.res
 
     cite("Invariance: Layher Exp 1", :paper,
-         "(N = #), payoffs affected both indexes, while overall memory-strength and interaction effects were not significant: payoff F(#, #) = # and #, strength p = # and #, interaction p = # and #",
+         "(N = #). Payoffs affected both indexes, while memory-strength and interaction effects were not significant: payoff F(#, #) = # and #, strength p = # and #, interaction p = # and #",
          length(unique(L1.data.sub)), r1[:PPB].bias.df1, r1[:PPB].bias.df2, r1[:PPB].bias.F, r1[:c].bias.F,
          r1[:PPB].strength.p, r1[:c].strength.p, r1[:PPB].interaction.p, r1[:c].interaction.p)
     invariant("Layher Exp 1: PPB and c pass, payoff p < .001",
               passes(L1, :PPB) && passes(L1, :c) && max(r1[:PPB].bias.p, r1[:c].bias.p) < 0.001)
     cite("Invariance: Measuring Memory", :paper,
-         "(N = #), instructions affected both indexes, while overall memory-strength and interaction effects were not significant: instruction F(#, #) = # and #, strength p = # and #, interaction p = # and #",
+         "(N = #). Instructions affected both indexes, while memory-strength and interaction effects were not significant: instruction F(#, #) = # and #, strength p = # and #, interaction p = # and #",
          nrow(MM.data), rm[:PPB].bias.df1, rm[:PPB].bias.df2, rm[:PPB].bias.F, rm[:c].bias.F,
          rm[:PPB].strength.p, rm[:c].strength.p, rm[:PPB].interaction.p, rm[:c].interaction.p)
     invariant("Measuring Memory: PPB and c pass, instruction p < .001",
               passes(MM, :PPB) && passes(MM, :c) && max(rm[:PPB].bias.p, rm[:c].bias.p) < 0.001)
-    claim("Layher Exp 2: every index fails", :paper, "Under the base-rate manipulation of Layher et al., every index failed to meet these criteria",
+    claim("Layher Exp 2: every index fails", :paper, "Under the base-rate manipulation of Layher et al., every index failed",
           count(y -> passes(L2, y), Inv.PRIMARY) == 0)
     claim("Layher Exp 1: J payoff and interaction effects", :paper,
           "Raw J also showed payoff and interaction effects in Layher Experiment 1",
           r1[:J].bias.p < 0.05 && r1[:J].interaction.p < 0.05)
     claim("Measuring Memory: J meets ANOVA criteria", :paper,
-          "the Measuring Memory analysis detected a strength effect for J but no instruction or interaction effect", passes(MM, :J))
+          "in the Measuring Memory analysis it showed a strength effect but no instruction or interaction effect", passes(MM, :J))
     dmax = maximum(maximum(Inv.cell_means(o.ds, o.data, :dprime)) for o in (L1, L2))
     cite("Invariance: d' bound", :paper, "poorly discriminated faces (d' \\le #)", 1.1)
     invariant("Layher max cell-mean d' <= 1.1", dmax <= 1.1, string(round(dmax; digits = 3)))
@@ -675,13 +707,16 @@ function check_invariance()
     invariant("Layher Exp 2 trials per cell = Exp 1", only(unique(L2.data.n_old .+ L2.data.n_new)) == 1000)
     cite("Data: MM trials", :paper, "the Measuring Memory Project [@starns_assessing_2019], with # per participant",
          only(unique(MM.data.n_old .+ MM.data.n_new)))
-    claim("Correction sensitivity preserves ANOVA criteria outcomes", :supp, "did not change whether the indexes met the ANOVA criteria",
-          count(o -> any(((y, y0),) -> Inv.verdict(o.res[y], y0) != Inv.verdict(o.res[y0], y0),
-                         ((:PPB_ll, :PPB), (:c_hn, :c), (:Br, :Br_ll))), (L1, L2, MM)) == 0)
+    claim("c correction sensitivity preserves ANOVA criteria outcomes", :supp,
+          "did not change whether it met the ANOVA criteria",
+          all(o -> Inv.verdict(o.res[:c_hn], :c) == Inv.verdict(o.res[:c], :c), (L1, L2, MM)))
+    claim("Raw B_r comparison preserves ANOVA criteria outcomes", :supp,
+          "Using raw rates for B_r also left the classifications unchanged",
+          all(o -> Inv.verdict(o.res[:Br], :Br_ll) == Inv.verdict(o.res[:Br_ll], :Br_ll), (L1, L2, MM)))
 
     # Supplement ANOVA tables: every F, p and verdict
     labels = Dict("PPB" => :PPB, "c" => :c, "J" => :J, "d'" => :dprime, "B_r" => :Br_ll,
-                  "PPB, log-linear" => :PPB_ll, "J, log-linear" => :J_ll, "c, 1/2N" => :c_hn, "B_r, raw" => :Br)
+                  "c, 1/2N" => :c_hn, "B_r, raw" => :Br)
     fmt_df(e) = "($(e.df1), $(e.df2))"
     for (tbl, o) in (("tbl-inv-layher1", L1), ("tbl-inv-layher2", L2), ("tbl-inv-mm", MM))
         hdr = table_header(:supp, tbl)
@@ -732,8 +767,6 @@ function check_invariance()
     cite("Supp: Layher Exp 1 PPB strength gaps", :supp, "the strength differences in PPB are #, # and #", dP...)
     cite("Supp: Layher Exp 1 PPB interaction p", :supp, "the interaction is not significant (p = #)", r1[:PPB].interaction.p)
     cite("Supp: d' payoff F", :supp, "because payoff also moves it (F(2, 76) = #)", r1[:dprime].bias.F)
-    dF = maximum(abs(getfield(L2.res[:PPB_ll], e).F - getfield(L2.res[:PPB], e).F) for e in (:strength, :bias, :interaction))
-    cite("Supp: Exp 2 log-linear PPB change", :supp, "these statistics change by at most #", dF)
 
     cp = L1.contrasts[:PPB].con_minus_lib
     cite("Invariance: Layher PPB strength interaction interval", :paper,
@@ -791,7 +824,7 @@ function check_colloff_wixted()
          "by # (95% CI: # to #; N = #), # (# to #; N = #), and # (# to #; N = #)",
          (v for r in R for v in (r.ppb.diff, r.ppb.lo, r.ppb.hi, r.n))...)
     cite("Colloff-Wixted: percentage points", :paper,
-         "which is #, #, and # percentage points in choosing probability",
+         "In choosing probability these differences are #, #, and # percentage points",
          (100 * r.ppb.diff / 2 for r in R)...)
     cite("Colloff-Wixted: J differences", :paper, "No difference in J was detected (estimated differences: #, #, and #;",
          (r.J.diff for r in R)...)

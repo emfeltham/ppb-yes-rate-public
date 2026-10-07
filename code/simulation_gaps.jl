@@ -339,6 +339,14 @@ end
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # GAP C: Boundary × aggregation interaction (Sim 5)
+#
+# INTERNAL CHECK; NOT REPORTED IN THE PAPER OR SUPPLEMENT. For identical
+# observers, the quantities estimated here (bias of the mean log-linear-corrected
+# c, and of the mean uncorrected c after dropping boundary subjects) equal
+# Sim.exact_boundary_bias's c_ll_bias and c_excl_bias at every K, so this Monte
+# Carlo version is redundant for the reported numbers. Kept as a cross-check of
+# the exact enumeration and as a starting point if heterogeneous observers are
+# ever needed, where the expectation no longer reduces to one binomial table.
 # ═══════════════════════════════════════════════════════════════════════════════
 
 function sim5_boundary_aggregation(;

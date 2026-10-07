@@ -552,6 +552,34 @@ function sim_regression_artifact(;
     return results
 end
 
+"""Summarize the regression simulation across seeds 1–200 (Supplement §9).
+
+Each seed runs both groups in the same order as the figure's seed-789 run.
+Standard deviations describe variation across replications; ratios are the
+absolute moderate-accuracy slope divided by the high-accuracy slope.
+"""
+function regression_repetition_summary(; seeds = 1:200, n_subjects = 2000, n_trials = 40)
+    seed_values = collect(seeds)
+    length(seed_values) >= 2 || throw(ArgumentError("At least two seeds are required"))
+    ppb_slopes = [Float64[], Float64[]]
+    c_slopes = [Float64[], Float64[]]
+    for seed in seed_values
+        results = sim_regression_artifact(; seed, n_subjects, n_trials)
+        for group in 1:2
+            push!(ppb_slopes[group], results[group].slope_ppb)
+            push!(c_slopes[group], results[group].slope_c_loglin)
+        end
+    end
+    groups = [(; label, ppb_mean = mean(ppb_slopes[group]), ppb_sd = std(ppb_slopes[group]),
+               c_mean = mean(c_slopes[group]), c_sd = std(c_slopes[group]))
+              for (group, label) in enumerate(("High accuracy", "Moderate accuracy"))]
+    ppb_ratios = abs.(ppb_slopes[2] ./ ppb_slopes[1])
+    c_ratios = abs.(c_slopes[2] ./ c_slopes[1])
+    return (; seeds = seed_values, n_replications = length(seed_values), groups,
+            ppb_ratio = (mean = mean(ppb_ratios), sd = std(ppb_ratios)),
+            c_ratio = (mean = mean(c_ratios), sd = std(c_ratios)))
+end
+
 function report_sim4(results)
     r1 = results[1]
     println("\n═══ Regression artifact simulation ═══")

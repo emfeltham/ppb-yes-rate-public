@@ -15,10 +15,8 @@
 # c and d' on log-linear
 # corrected rates, (x + 0.5)/(N + 1); B_r = F/(1 - H + F) on log-linear rates,
 # because raw B_r is 0/0 at H = 1, F = 0, which occurs in the Measuring Memory
-# data. Sensitivity: PPB on log-linear rates (the rule Snodgrass & Corwin apply
-# to every index, and the rule of the preliminary Python analysis); J on
-# log-linear rates; c with the
-# 1/2N correction; B_r on raw rates, dropping participants where it is 0/0
+# data. Sensitivity: c with the 1/2N correction; B_r on raw rates,
+# dropping participants where it is 0/0
 # (within-subjects: dropping the whole subject).
 #
 # Pass rule (Snodgrass & Corwin, 1988, p. 43), alpha = .05: a bias index needs
@@ -74,9 +72,7 @@ function add_indexes!(d::DataFrame)
     d.F_hn = halfn.(d.fa, d.n_new)
     d.boundary = (d.H .== 0) .| (d.H .== 1) .| (d.F .== 0) .| (d.F .== 1)
     d.PPB = d.H .+ d.F
-    d.PPB_ll = d.H_ll .+ d.F_ll
     d.J = d.H .- d.F
-    d.J_ll = d.H_ll .- d.F_ll
     d.c = crit.(d.H_ll, d.F_ll)
     d.c_hn = crit.(d.H_hn, d.F_hn)
     d.c_raw = crit.(d.H, d.F)
@@ -221,7 +217,7 @@ end
 
 # ─── Verdicts ──────────────────────────────────────────────────────────────
 
-const DISCRIM_INDEXES = (:dprime, :J, :J_ll)
+const DISCRIM_INDEXES = (:dprime, :J)
 
 """Snodgrass & Corwin's rule. Bias index: bias p < .05, strength p >= .05,
 interaction p >= .05. Discrimination index: strength p < .05, bias p >= .05,
@@ -275,7 +271,7 @@ const DATASETS = (
 )
 
 const PRIMARY = (:PPB, :c, :J, :dprime, :Br_ll)
-const SENSITIVITY = (:PPB_ll, :J_ll, :c_hn, :Br)
+const SENSITIVITY = (:c_hn, :Br)
 
 """ANOVA for index `y`. Rows (between) or subjects (within) with a
 non-finite value are dropped; only raw B_r can produce one."""
@@ -478,7 +474,7 @@ function write_contrast_table(out; path = joinpath(@__DIR__, "..", "tables", "tb
             println(io, "| $(labels[key]) | Conservative minus liberal | $(join(values, " | ")) |")
         end
         println(io)
-        println(io, ": Specified strength contrasts, high minus low (5 minus 1 presentations for Layher; 3 minus 1 for Measuring Memory), and conservative-minus-liberal differences between those strength contrasts. PPB and J use raw rates; c uses log-linear rates. Layher intervals are t-based confidence intervals computed from participant-level contrasts (39 participants; 38 df), preserving the covariance among cells. Measuring Memory intervals use independent group means and Welch-Satterthwaite df; variances from all four independent cells enter the difference of strength differences. The 1-presentation/3-presentation sample sizes are 53/48 with no instruction, 52/48 with conservative instruction, and 53/50 with liberal instruction. Each comparison has a nominal 95% confidence interval, without adjustment for multiple comparisons. These intervals describe population-level contrasts across participants; individual binomial uncertainty is addressed separately. Strength is confounded with practice in Layher Experiment 1. No equivalence tolerance is specified, so intervals containing zero do not establish invariance. {#tbl-inv-contrasts}")
+        println(io, ": Mean participant-level strength contrasts: high minus low (5 minus 1 presentations for Layher; 3 minus 1 for Measuring Memory), and conservative-minus-liberal differences in these effects. PPB and J use raw rates; c uses log-linear rates. Layher uses paired t-based intervals (39 participants; 38 df), preserving cell covariance. Measuring Memory uses independent group means and Welch-Satterthwaite df; the difference of strength effects uses all four cell variances. The 1-presentation/3-presentation sample sizes are 53/48 with no instruction, 52/48 with conservative instruction, and 53/50 with liberal instruction. Intervals are nominal 95%, without adjustment for multiple comparisons. Strength is confounded with practice in Layher Experiment 1. {#tbl-inv-contrasts}")
     end
     return path
 end
